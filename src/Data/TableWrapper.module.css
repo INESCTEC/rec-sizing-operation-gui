@@ -1,0 +1,9 @@
+.tableWrapper {
+  width: 100%;
+}
+
+.tableTitle {
+  font-weight: bold;
+  font-size: large;
+  padding-bottom: 1%;
+}

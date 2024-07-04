@@ -1,0 +1,115 @@
+.navBarContainer {
+  position: fixed;
+  background-color: #9966ff;
+  height: calc(100% - 54px);
+  width: 15rem;
+  transition: 0.05s linear;
+  z-index: 99999;
+}
+
+.navBarContainerHidden {
+  width: 3.5rem !important;
+  transition: 0.05s linear;
+}
+
+.navBar {
+  vertical-align: top;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.itemText {
+  text-decoration: none;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+.button,
+.buttonSelected {
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+  width: 100%;
+  align-items: center;
+  transition: none;
+  font-weight: bold;
+  font-size: 1rem;
+  justify-content: flex-start;
+  user-select: none;
+}
+
+.button:focus-visible,
+.buttonSelected:focus-visible {
+  border-left: 1px solid #00e1a8;
+  border-radius: 1pt;
+  transition: 0.1s;
+  outline: transparent;
+}
+
+.button:focus,
+.buttonSelected:focus {
+  border-radius: 1pt;
+  transition: 0.1s;
+  outline: transparent;
+}
+
+.buttonSelected {
+  color: #00e1a8;
+  background-color: #6f3bd7;
+  border-left: 1px solid #00e1a8;
+}
+
+.buttonContent {
+  padding: 0.5rem;
+  height: 3rem;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttonContent svg {
+  vertical-align: middle;
+  height: 20px;
+  width: 20px;
+}
+
+.buttonContent p {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.link {
+  text-decoration: none;
+  color: white;
+}
+
+.link:hover {
+  color: #00e1a8;
+}
+
+.buttonSelected .link {
+  background-color: #6f3bd7;
+  color: #00e1a8;
+}
+
+.hideButton {
+  border: none !important;
+  border-radius: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  color: white;
+  height: 3rem;
+  background-color: #6f3bd7 !important;
+}
+
+.hideButton:hover{
+  cursor: pointer;
+}
+
+.hideButton svg {
+  vertical-align: middle;
+  height: 24px;
+  width: 24px;
+}

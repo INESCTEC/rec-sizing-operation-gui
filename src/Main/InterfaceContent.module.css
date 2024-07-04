@@ -1,0 +1,41 @@
+.twoChartContainer {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  float: none;
+  overflow: hidden;
+  width: 100%;
+  margin: 0;
+  min-height: 45%;
+}
+
+@media only screen and (max-width: 800px) {
+  .twoChartContainer {
+    justify-content: center;
+    grid-template-columns: 100%;
+    grid-template-rows: 50% 50%;
+  }
+}
+
+.formWrapper {
+  margin-left: 1rem;
+}
+
+.formWrapper div * {
+  border-radius: 3px !important;
+  outline: none !important;
+  border-color: #7a7979;
+}
+
+.select option {
+  font-size: 0.9rem;
+}
+
+.tab:hover {
+  border-block-end: 2px solid var(--cds-border-interactive, #00e1a8) !important;
+}
+
+.tab:active, 
+.tab:focus,
+.tab:focus-visible{
+  outline: 2px solid var(--cds-focus, #00e1a8) !important;
+}
