@@ -16,10 +16,6 @@
   }
 }
 
-.formWrapper {
-  margin-left: 1rem;
-}
-
 .formWrapper div * {
   border-radius: 3px !important;
   outline: none !important;
@@ -29,6 +25,7 @@
 .select option {
   font-size: 0.9rem;
 }
+
 
 .tab:hover {
   border-block-end: 2px solid var(--cds-border-interactive, #00e1a8) !important;

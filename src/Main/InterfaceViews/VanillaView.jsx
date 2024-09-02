@@ -1,38 +1,51 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import VanillaViewContent from "../Pricing/Vanilla/VanillaViewContent";
 import VanillaFormView from "../Pricing/Vanilla/VanillaFormView";
+import { MeterContext } from "../Interface";
+import { useNotification } from "../../Notification/NotificationProvider";
+import { API_URL } from "../Interface";
 
 function VanillaView() {
+  const notification = useNotification();
+  const { meters, _ } = useContext(MeterContext);
   const [fetchData, setFetchData] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [formData, setFormData] = useState({
     start_datetime: null,
     end_datetime: null,
-    meter_ids: ["Meter#1", "Meter#2"],
+    meter_ids: [],
+    dataset_origin: "SEL",
     sdr_compensation: 0,
     mmr_divisor: 2,
   });
 
-  useEffect(() => getOrderData(orderId, setFetchData), [orderId]);
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, meter_ids: meters }));
+  }, [meters]);
+
+  useEffect(
+    () => getOrderData(orderId, setFetchData, notification),
+    [orderId]
+  );
 
   return (
     <>
-      <div className="interface-title">Vanilla</div>
       {fetchData ? (
         <VanillaViewContent data={fetchData} />
       ) : (
         <VanillaFormView
-          onSubmit={(pricing_mechanism) =>
-            getOrder(setOrderId, pricing_mechanism, formData)
-          }
+          onSubmit={(pricing_mechanism) => {
+            getOrder(setOrderId, pricing_mechanism, formData, notification);
+          }}
           setFormData={setFormData}
+          selectedMeters={meters}
         />
       )}
     </>
   );
 }
 
-function getOrder(setOrderId, pricing_mechanism, formData) {
+function getOrder(setOrderId, pricing_mechanism, formData, notification) {
   if (
     pricing_mechanism !== "default" &&
     formData.start_datetime !== null &&
@@ -40,7 +53,7 @@ function getOrder(setOrderId, pricing_mechanism, formData) {
     formData.meter_ids.length !== 0
   ) {
     document.body.style.cursor = "wait";
-    fetch(`http://localhost:8001/vanilla/${pricing_mechanism}`, {
+    fetch(API_URL['PRICING'] + `/vanilla/${pricing_mechanism}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -56,11 +69,13 @@ function getOrder(setOrderId, pricing_mechanism, formData) {
         setOrderId(data.order_id);
       })
       .catch((error) => {
+        document.body.style.cursor = "default";
         if (typeof error.json === "function") {
           error
             .json()
             .then((jsonError) => {
               console.log("Json error from API");
+              notification.setNotification(jsonError.detail[0].msg);
               console.log(jsonError.detail);
             })
             .catch((_) => {
@@ -72,12 +87,14 @@ function getOrder(setOrderId, pricing_mechanism, formData) {
           console.log(error);
         }
       });
+  } else {
+    notification.setNotification("Please fill all required fields before submitting.");
   }
 }
 
-function getOrderData(orderId, setFetchData) {
+function getOrderData(orderId, setFetchData, notification) {
   if (orderId !== null) {
-    fetch(`http://localhost:8001/vanilla/${orderId}`)
+    fetch(API_URL['PRICING'] + `/vanilla/${orderId}`)
       .then((res) => {
         if (res.status !== 200) {
           return Promise.reject(res);
@@ -86,8 +103,6 @@ function getOrderData(orderId, setFetchData) {
       })
       .then((data) => {
         setFetchData(data);
-
-        document.body.style.cursor = "default";
       })
       .catch((error) => {
         if (typeof error.json === "function") {
@@ -96,21 +111,26 @@ function getOrderData(orderId, setFetchData) {
             .then((jsonError) => {
               console.log("Json error from API");
               console.log(jsonError);
+              notification.setNotification(jsonError.message);
               if (error.status > 200 && error.status < 300)
                 return new Promise(() => {
-                  setTimeout(() => getOrderData(orderId, setFetchData), 1000);
+                  setTimeout(() => getOrderData(orderId, setFetchData, notification), 5000);
                 });
             })
             .catch((_) => {
               console.log("Generic error from API");
               console.log(error.statusText);
+              notification.setNotification(error.statusText);
             });
         } else {
           console.log("Fetch error");
           console.log(error);
+          notification.setNotification("Failed to fetch.");
         }
       });
   }
+
+  document.body.style.cursor = "default";
 }
 
 export default VanillaView;

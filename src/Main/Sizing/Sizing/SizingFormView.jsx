@@ -10,17 +10,28 @@ import {
 import styles from "../../InterfaceContent.module.css";
 import SizingParamsMeterList from "./SizingParamsMeterList";
 import SizingParamsSharedMeter from "./SizingParamsSharedMeter";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import MeterInput from "../../SharedModules/MeterInput";
+import { MeterContext } from "../../Interface";
 
-function SizingFormView({ onSubmit, formData, setFormData }) {
+function SizingFormView({ onSubmit, setFormData }) {
+  const { meters, allMeters } = useContext(MeterContext);
   const [hasSharedMeter, setHasSharedMeter] = useState(false);
+  const [numDays, setNumDays] = useState(1);
   const setDates = (dates) => {
     if (dates.length > 1) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        start_datetime: "2024-05-16 00:00:00", //dates[0]
-        end_datetime: "2024-05-16 00:45:00", //dates[1]
+        // start_datetime: dates[0],
+        // end_datetime: dates[1],
+        "start_datetime": "2024-05-16T00:00:00Z",
+        "end_datetime": "2024-05-16T00:45:00Z",
       }));
+      let days = Math.round(
+        (dates[1].getTime() - dates[0].getTime()) / (1000 * 3600 * 24)
+      );
+      setNumDays(days);
+      setDay(days);
     }
   };
 
@@ -28,13 +39,6 @@ function SizingFormView({ onSubmit, formData, setFormData }) {
     setFormData((prevFormData) => ({
       ...prevFormData,
       nr_representative_days: day,
-    }));
-  };
-
-  const setMeterIds = (current) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      meter_ids: current,
     }));
   };
 
@@ -56,19 +60,20 @@ function SizingFormView({ onSubmit, formData, setFormData }) {
 
   return (
     <>
-      <div className="interface-title">Calculate Sizing</div>
-      <div className="card-wrapper">
-        <div className="card-header"></div>
-        <div className="card-body">
-          <div className={styles.formWrapper}>
-            <Form
-              aria-label="sample form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                onSubmit(hasSharedMeter);
-              }}
-            >
-              <Stack gap={7}>
+      <div className={styles.formWrapper}>
+        <Form
+          aria-label="sample form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit(hasSharedMeter);
+          }}
+        >
+          <div className="card-wrapper">
+            <div className="card-header">
+              <p>Dates</p>
+            </div>
+            <div className="card-body">
+              <Stack className="form-stack" gap={7}>
                 <DatePicker
                   datePickerType="range"
                   dateFormat="d/m/Y"
@@ -89,48 +94,73 @@ function SizingFormView({ onSubmit, formData, setFormData }) {
                     autoComplete="off"
                   />
                 </DatePicker>
-                <span style={{ width: "18rem" }}>
+                <span style={{ width: "100%", gap: "10px", alignItems:"flex-end" }} className="row">
+                  <span>
                   <NumberInput
                     label="Number of Representative Days"
-                    placeholder="0"
+                    placeholder="1"
                     id="number-input"
-                    min={0}
+                    min={1}
+                    value={numDays}
+                    max={numDays}
                     onChange={(_, state) => setDay(state.value)}
                   ></NumberInput>
-                </span>
-                <Checkbox
-                  labelText="With Shared Resources"
-                  id="checkbox-0"
-                  checked={hasSharedMeter}
-                  onChange={(_, { checked }) => {
-                    setHasSharedMeter(checked);
-                    if (!checked) removeSharedMeter();
-                  }}
-                />
-
-                {hasSharedMeter ? (
-                  <span>
-                    <div className="card-wrapper">
-                      <div className="card-header">
-                        <p>Shared Meter</p>
-                      </div>
-                      <div className="card-body">
-                        <SizingParamsSharedMeter
-                          setFormData={setFormData}
-                          meterList={formData.meter_ids}
-                        />
-                      </div>
-                    </div>
                   </span>
-                ) : undefined}
-                <SizingParamsMeterList setMetersIds={setMeterIds} setMeterParams={setMeterParams} />
-                <Button className="primary-button" type="submit">
-                  Submit
-                </Button>
+                  <div
+                    style={{
+                      fontSize: "0.9rem",
+                      paddingBottom: "12px"
+                    }}
+                  >
+                    Maximum days: {numDays}
+                  </div>
+                </span>
               </Stack>
-            </Form>
+            </div>
           </div>
-        </div>
+
+          <MeterInput></MeterInput>
+          <div className="card-wrapper">
+            <div className="card-header">
+              <p>Meters Parameters</p>
+            </div>
+            <div className="card-body">
+
+              <SizingParamsMeterList setMeterParams={setMeterParams} />
+              <Checkbox
+                labelText="With Shared Resources"
+                id="checkbox-0"
+                checked={hasSharedMeter}
+                onChange={(_, { checked }) => {
+                  setHasSharedMeter(checked);
+                  if (!checked) removeSharedMeter();
+                }}
+              />
+
+              {hasSharedMeter ? (
+                <span>
+                  <div className="card-wrapper">
+                    <div className="card-header">
+                      <p>Shared Meter</p>
+                    </div>
+                    <div className="card-body">
+                      <SizingParamsSharedMeter
+                        setFormData={setFormData}
+                        meterList={allMeters}
+                        selected={meters}
+                      />
+                    </div>
+                  </div>
+                </span>
+              ) : undefined}
+            </div>
+          </div>
+          <div className="row flex-just-end">
+            <Button className="primary-button" type="submit">
+              Submit
+            </Button>
+          </div>
+        </Form>
       </div>
     </>
   );

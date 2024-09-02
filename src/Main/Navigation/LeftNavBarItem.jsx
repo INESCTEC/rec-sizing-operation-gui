@@ -6,7 +6,7 @@ function LeftNavBarItem({ hidden, text, icon }) {
         {hidden ? (
           undefined
         ) : (
-          <p style={{ textWrap: "nowrap" }}>{text}</p>
+          <p className={styles.hide} style={{ textWrap: "nowrap" }}>{text}</p>
         )}
         {icon}
       </div>

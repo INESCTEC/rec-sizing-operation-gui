@@ -41,12 +41,6 @@
   width: 20%;
 }
 
-.formWrapper div * {
-  border-radius: 3px !important;
-  outline: none !important;
-  border-color: #7a7979;
-}
-
 .select option {
   font-size: 0.9rem;
 }
@@ -61,15 +55,17 @@
 }
 
 .sizingParams {
-  display: grid;
-  grid-template-columns: 47% 47%;
-  row-gap: 0.5rem;
-  column-gap: 2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   width: 100%;
 }
 
 .sizingParams .numberInput {
-  width: 100%;
+  width: 45%;
+  min-width: 150px;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 
 .sizingParamsWrapper {

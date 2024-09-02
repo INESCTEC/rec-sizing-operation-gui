@@ -1,15 +1,21 @@
 .navBarContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 1px 0px 5px #00000034;
   position: fixed;
   background-color: #9966ff;
   height: calc(100% - 54px);
   width: 15rem;
-  transition: 0.05s linear;
-  z-index: 99999;
+  z-index: 997;
 }
 
 .navBarContainerHidden {
-  width: 3.5rem !important;
-  transition: 0.05s linear;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 1px 0px 5px #00000034;
+  width: 3.5rem;
 }
 
 .navBar {
@@ -71,8 +77,8 @@
 
 .buttonContent svg {
   vertical-align: middle;
-  height: 20px;
-  width: 20px;
+  height: 22px !important;
+  width: 22px !important;
 }
 
 .buttonContent p {
@@ -112,4 +118,41 @@
   vertical-align: middle;
   height: 24px;
   width: 24px;
+}
+
+
+@media only screen and (max-width: 650px) {
+  .navBarContainer, .navBarContainerHidden {
+    box-shadow: 1px 0px 5px #00000034;
+    position: fixed;
+    background-color: #9966ff;
+    bottom: 0;
+    left: 0;
+    transition: none;
+    z-index: 997;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 3rem;
+    justify-content: center;
+  }
+  .hideButton{
+    display: none;
+  }
+
+  .navBar{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .buttonSelected {
+    color: #00e1a8;
+    background-color: #6f3bd7;
+    border-left: none;
+    border-bottom: 1px solid #00e1a8;
+  }
+
+  .hide{
+    display: none;
+  }
 }

@@ -1,21 +1,47 @@
-import { Form, Stack, Button, NumberInput } from "@carbon/react";
+import {
+  Form,
+  Stack,
+  Button,
+  NumberInput,
+  Select,
+  SelectItem,
+} from "@carbon/react";
 import styles from "../../InterfaceContent.module.css";
+import { useState } from "react";
 
 function SearchMetersFormView({ onSubmit, setFormData }) {
+  const [select, setSelect] = useState("default");
   return (
     <>
-      <div className="card-wrapper">
-        <div className="card-header"></div>
-        <div className="card-body">
-          <div className={styles.formWrapper}>
-            <Form
-              aria-label="sample form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                onSubmit();
-              }}
-            >
+      <div className={styles.formWrapper}>
+        <Form
+          aria-label="sample form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setFormData((prev) => ({ ...prev, dataset_origin: select }));
+            onSubmit();
+          }}
+        >
+          <div className="card-wrapper">
+            <div className="card-header"><p>Parameters</p></div>
+            <div className="card-body">
               <Stack gap={7}>
+                <Select
+                  id="select-1"
+                  className={styles.select}
+                  defaultValue={select}
+                  onChange={(e) => setSelect(e.target.value)}
+                  labelText="Meter Origin"
+                >
+                  <SelectItem
+                    disabled
+                    hidden
+                    value="default"
+                    text="Choose meter dataset"
+                  />
+                  <SelectItem key={"SEL"} value={"SEL"} text={"SEL"} />
+                  <SelectItem key={"CEVE"} value={"CEVE"} text={"CEVE"} />
+                </Select>
                 <NumberInput
                   id="Latitude"
                   label="Latitude"
@@ -61,13 +87,15 @@ function SearchMetersFormView({ onSubmit, setFormData }) {
                     }))
                   }
                 />
-                <Button className="primary-button" type="submit">
-                  Submit
-                </Button>
               </Stack>
-            </Form>
+            </div>
           </div>
-        </div>
+          <div className="row flex-just-end">
+            <Button className="primary-button" type="submit">
+              Submit
+            </Button>
+          </div>
+        </Form>
       </div>
     </>
   );

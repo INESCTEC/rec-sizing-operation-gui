@@ -1,8 +1,33 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import SearchMetersViewContent from "../Sizing/SearchMeters/SearchMetersViewContent";
 import SearchMetersFormView from "../Sizing/SearchMeters/SearchMetersFormView";
+import { MeterContext } from "../Interface";
+import { Tabs, Tab, TabList, TabPanel, TabPanels } from "@carbon/react";
+
+import styles from "../InterfaceContent.module.css";
+import { API_URL } from "../Interface";
 
 function SearchMetersView() {
+  return (
+    <>
+      <div className="card-wrapper">
+        <Tabs>
+          <TabList aria-label="List of tabs">
+            <Tab className={styles.tab}>Search Meters</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <SearchMetersViewB />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </div>
+    </>
+  );
+}
+
+function SearchMetersViewB() {
+  const { setMeters } = useContext(MeterContext);
   const [fetchData, setFetchData] = useState(null);
   const [formData, setFormData] = useState({
     rec_location: {
@@ -10,16 +35,21 @@ function SearchMetersView() {
       longitude: 0,
     },
     radius: 0,
+    dataset_origin: "default",
   });
+
+  const setData = (data) => {
+    setMeters(data);
+    setFetchData(data);
+  };
 
   return (
     <>
-      <div className="interface-title">Search Meters</div>
       {fetchData ? (
         <SearchMetersViewContent data={fetchData} />
       ) : (
         <SearchMetersFormView
-          onSubmit={() => getData(setFetchData, formData)}
+          onSubmit={() => getData(setData, formData)}
           setFormData={setFormData}
         />
       )}
@@ -29,7 +59,7 @@ function SearchMetersView() {
 
 function getData(setFetchData, formData) {
   document.body.style.cursor = "wait";
-  fetch(`http://localhost:8001/search_meters_in_area`, {
+  fetch(API_URL['SIZING'] + `/search_meters_in_area`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -43,9 +73,9 @@ function getData(setFetchData, formData) {
     })
     .then((data) => {
       setFetchData(data);
-      document.body.style.cursor = "default";
     })
     .catch((error) => {
+      document.body.style.cursor = "default";
       if (typeof error.json === "function") {
         error
           .json()
@@ -62,6 +92,8 @@ function getData(setFetchData, formData) {
         console.log(error);
       }
     });
+
+  document.body.style.cursor = "default";
 }
 
 export default SearchMetersView;

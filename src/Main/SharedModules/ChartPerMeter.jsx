@@ -23,7 +23,7 @@ function ChartPerMeter({
   const energy_supplied_l = [];
   const net_load_l = [];
   const tableData = {};
-
+  console.log(lem_transactions)
   for (let key in meter_inputs) {
     const {
       meter_id,
@@ -40,7 +40,11 @@ function ChartPerMeter({
       load_l.push([datetime, energy_consumed]);
       tableData[datetime] = {
         meter_id: meter_id_in,
-        datetime: new Date(datetime).toUTCString(),
+        datetime: new Date(datetime).toLocaleTimeString([], {
+          year: 'numeric', month: 'numeric', day: 'numeric',
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
         load: energy_consumed,
         PV: energy_generated,
         buy_price: buy_tariff,
@@ -79,17 +83,17 @@ function ChartPerMeter({
   }
 
   for (let key in lem_transactions) {
-    const { meter_id, datetime, energy_purchased_lem, energy_sold_lem } =
+    const { meter_id, datetime, sold_position } =
       lem_transactions[key];
     if (meter_id === meter_id_in) {
-      sold_position_l.push([datetime, energy_sold_lem - energy_purchased_lem]);
+      sold_position_l.push([datetime, sold_position ]);
       tableData[datetime]["sold_position"] =
-        energy_sold_lem - energy_purchased_lem;
+        sold_position;
     }
   }
 
   series.push({
-    name: "buy price",
+    name: "Buy Price",
     type: "line",
     symbol: "line",
     symbolSize: 0,
@@ -102,7 +106,7 @@ function ChartPerMeter({
     },
   });
   series.push({
-    name: "sell price",
+    name: "Sell Price",
     type: "line",
     symbol: "line",
     symbolSize: 0,
@@ -115,7 +119,7 @@ function ChartPerMeter({
     },
   });
   series.push({
-    name: "shadow price",
+    name: "Transactions Price",
     type: "line",
     symbol: "line",
     symbolSize: 0,
@@ -145,7 +149,7 @@ function ChartPerMeter({
     },
   });
   series.push({
-    name: "Supply",
+    name: "Supplied",
     type: "line",
     yAxisIndex: 0,
     data: energy_supplied_l,
@@ -180,7 +184,7 @@ function ChartPerMeter({
     },
   });
   series.push({
-    name: "PV",
+    name: "Generation",
     type: "bar",
     yAxisIndex: 0,
     data: pv_l,
@@ -191,7 +195,7 @@ function ChartPerMeter({
     },
   });
   series.push({
-    name: "sold_position",
+    name: "Sold Position",
     type: "line",
     symbol: "circle",
     symbolSize: 14,
@@ -203,7 +207,7 @@ function ChartPerMeter({
       },
     },
   });
-
+/*
   series.push({
     name: "net_load",
     type: "line",
@@ -216,50 +220,52 @@ function ChartPerMeter({
         return value + " KWh";
       },
     },
-  });
+  });*/
 
   const energ_expend_option = {
     title: {
       text: title,
     },
     grid: {
-      top: "25%",
-      left: "10%",
-      right: "15%",
+      top: "22%",
+      left: "48px",
+      right: "55px",
     },
     legend: {
       orient: "vertical",
-      height: "20%",
+      height: "70px",
       right: "10%",
+      top: "5%",
       data: [
         {
-          name: "Battery",
+          name: "Buy Price",
         },
         {
-          name: "Supply",
+          name: "Sell Price",
         },
         {
-          name: "Surplus",
+          name: "Transactions Price",
         },
         {
           name: "Load",
         },
         {
-          name: "PV",
+          name: "Battery",
         },
         {
-          name: "sold_position",
+          name: "Generation",
+        },        
+        {
+          name: "Supplied",
         },
         {
-          name: "buy price",
+          name: "Surplus",
         },
         {
-          name: "sell price",
+          name: "Sold Position",
         },
-        {
-          name: "shadow price",
-        },
-        { name: "net_load" },
+        /*
+        { name: "net_load" },*/
       ],
     },
     tooltip: {

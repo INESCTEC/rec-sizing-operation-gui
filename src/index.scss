@@ -7,9 +7,12 @@ body {
 body {
   height: 100vh;
   margin: 0;
-  font-family: "Manrope", Helvetica, Arial, Lucida, sans-serif !important;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif !important;
   font-size: 14px;
+  background-image: linear-gradient(45deg, #9966ff 0%, #18e5b0 100%) !important;
+  background-attachment: fixed;
 }
+
 
 #root {
   height: 100%;
@@ -19,7 +22,7 @@ body {
 *:focus-visible {
   border: none;
   border-radius: 3px;
-  box-shadow: 0 0 0 1pt #18e5b0;
+  box-shadow: none;
   outline-color: transparent; /* for high contrast modes */
   transition: 0.1s;
   outline: transparent;
@@ -27,7 +30,6 @@ body {
 
 .primary-button,
 .secondary-button {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-weight: 600;
   font-size: 1rem;
   border: 1pt solid #905cfa;
@@ -40,11 +42,30 @@ body {
   user-select: none;
 }
 
+.danger-button {
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1pt solid #da1e28;
+  background-color: #da1e28;
+  border-radius: 3pt;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  display: flex;
+  justify-content: center;
+  user-select: none;
+}
+
+.danger-button:hover {
+  background-color: rgb(149, 27, 27);
+  transition: 0.3s;
+}
+
 .primary-button:active,
 .primary-button:focus-visible,
 .secondary-button:active,
-.secondary-button:focus-visible {
-  border: 1pt solid #18e5b0;
+.secondary-button:focus-visible,
+.danger-button:active,
+.danger-button:focus-visible {
   outline-color: transparent; /* for high contrast modes */
   background-color: #9966ff;
   transition: 0.1s;
@@ -59,10 +80,10 @@ body {
 }
 
 .primary-button:focus,
-.secondary-button:focus {
+.secondary-button:focus,
+.danger-button:focus {
   outline: none;
   box-shadow: none;
-  border: 1pt solid #18e5b0;
 }
 
 .primary-button {
@@ -83,11 +104,11 @@ body {
   border-radius: 0.25rem;
   box-shadow: 0 4px 10px 0 rgba(20, 19, 34, 0.03),
     0 0 10px 0 rgba(20, 19, 34, 0.02);
-  padding: 1.5rem;
+  padding: 0.5rem;
   padding-top: 0;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  width: 100%;
+  flex-wrap: nowrap;
 }
 
 .card-header {
@@ -98,17 +119,18 @@ body {
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 1rem;
-  margin-left: 1rem;
+  margin-left: 2%;
 }
 
 .card-body {
-  margin: 1.5rem;
+  margin: 2.5%;
   margin-top: 0.5rem;
 }
 
 .row {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .column {
@@ -131,6 +153,15 @@ body {
 .flex-just-center {
   justify-content: center;
 }
+
+.flex-just-start {
+  justify-content: flex-start;
+}
+
+.flex-just-end {
+  justify-content: flex-end;
+}
+
 
 .padding-1-rem {
   padding: 1rem !important;
@@ -182,12 +213,17 @@ body {
 
 .interface-container {
   overflow: hidden;
-  background-color: white;
   vertical-align: top;
+  margin-left: 3.5rem;
   padding: 1rem;
   padding-top: 0;
-  min-width: 40rem;
   transition: 0.05s linear;
+}
+
+@media only screen and (max-width: 650px) {
+  .interface-container {
+    margin-left: 0;
+  }
 }
 
 .margin-left-15-rem {
@@ -204,4 +240,120 @@ body {
 
 .margin-top-1rem {
   margin-top: 1rem;
+}
+
+.mt-0 {
+  margin-top: 0rem;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
+}
+
+.margin-bot-1rem {
+  margin-bottom: 1rem;
+}
+
+.margin-bot-0-8rem {
+  margin-bottom: 0.8rem;
+}
+
+.form-stack {
+  max-width: 100% !important;
+  width: 100%;
+}
+
+.cds--number
+  input[type="number"]:focus
+  ~ .cds--number__controls
+  .cds--number__control-btn {
+  border: none;
+}
+
+.notification {
+  position: fixed;
+  z-index: 99999999;
+  top: 15px;
+  right: 10px;
+  background: white;
+  color: black;
+  transition: 0.05s linear;
+  border-radius: 2px;
+  box-shadow: 1px 4px 8px 1px rgba(0, 0, 0, 0.2);
+}
+
+.notification div {
+  color: black;
+}
+
+.notification button:focus {
+  outline: 2px solid #18e5b0 !important;
+}
+
+.notification button svg {
+  fill: black !important;
+}
+
+.meter-input {
+  min-width: 126px;
+}
+
+.cds--accordion__content {
+  padding-right: 0px !important;
+}
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-bottom: 150px;
+}
+.signup-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.login-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login-button {
+  width: 382px !important;
+}
+
+.cds--overflow-menu-options::after{
+  content: none !important;
+}
+
+.cds--overflow-menu-options__btn:focus{
+  outline: none !important;
+}
+
+
+
+.cds--date-picker--range{
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cds--overflow-menu.cds--overflow-menu--open svg{
+  fill: #18e5b0 !important;
 }

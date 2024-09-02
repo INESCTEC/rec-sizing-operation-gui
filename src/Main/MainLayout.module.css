@@ -1,6 +1,5 @@
 .main {
   width: 100%;
-  height: calc(100% - 54px);
+  height: 100%;
   padding-top: 54px;
-  background-color: #ffffff;
 }

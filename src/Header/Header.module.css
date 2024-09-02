@@ -1,6 +1,6 @@
 .header {
   position: fixed;
-  z-index: 999;
+  z-index: 998;
   top: 0;
   display: flex;
   width: 100%;
@@ -17,5 +17,57 @@
   width: 10rem;
   user-select: none;
   margin-left: 3.5rem;
-  margin-top: 0.1rem;
+  vertical-align: middle;
+}
+
+.navMenuIcon {
+  fill: white !important;
+  height: 32px !important;
+  width: 32px !important;
+  vertical-align: middle;
+  border: none;
+}
+
+.navMenuIcon:hover {
+  fill: #18e5b0 !important;
+}
+
+
+.navMenu {
+  display: none;
+  margin-left: 10px !important;
+}
+
+
+
+@media only screen and (min-width: 651px) {
+  .navMenuIcon {
+    display: none;
+  }
+  .navMenu {
+    display: none;
+  }
+
+  .hide {
+    display: none;
+  }
+  
+
+}
+
+@media only screen and (max-width: 650px) {
+  .navMenuIcon {
+    display: inline;
+  }
+  .navMenu {
+    display: inline;
+  }
+  .logo {
+    margin-left: 0;
+  }
+
+  .hide {
+    display: inline;
+  }
+  
 }

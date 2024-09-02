@@ -7,40 +7,36 @@ import {
 } from "@carbon/react";
 import styles from "../../InterfaceContent.module.css";
 import { useState } from "react";
-import MeterInput from "../MeterInput";
+import MeterInput from "../../SharedModules/MeterInput";
 
 function DualFormView({ onSubmit, setFormData }) {
   const setDates = (dates) => {
     if (dates.length > 1) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        start_datetime: "2024-05-16T00:00:00Z", //dates[0]
-        end_datetime: "2024-05-16T00:45:00Z", //dates[1]
+        //start_datetime: dates[0],
+        //end_datetime: dates[1],
+        start_datetime: "2024-05-16T00:00:00Z",
+        end_datetime: "2024-05-16T00:45:00Z",
       }));
     }
   };
 
-  const [meters, setMeters] = useState([]);
-
   return (
     <>
-      <div className="interface-title">Dual</div>
-      <div className="card-wrapper">
-        <div className="card-header"></div>
-        <div className="card-body">
-          <div className={styles.formWrapper}>
-            <Form
-              aria-label="sample form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                const meter_ids = meters.map((v) => v.meter);
-                setFormData((prev) => ({
-                  ...prev,
-                  meter_ids: meter_ids,
-                }));
-                onSubmit();
-              }}
-            >
+      <div className={styles.formWrapper}>
+        <Form
+          aria-label="sample form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit();
+          }}
+        >
+          <div className="card-wrapper">
+            <div className="card-header">
+              <p>Dates</p>
+            </div>
+            <div className="card-body">
               <Stack gap={7}>
                 <DatePicker
                   datePickerType="range"
@@ -62,15 +58,17 @@ function DualFormView({ onSubmit, setFormData }) {
                     autoComplete="off"
                   />
                 </DatePicker>
-
-                <MeterInput meters={meters} setMeter={setMeters}></MeterInput>
-                <Button className="primary-button" type="submit">
-                  Submit
-                </Button>
               </Stack>
-            </Form>
+            </div>
           </div>
-        </div>
+          <MeterInput></MeterInput>
+
+          <div className="row flex-just-end">
+            <Button className="primary-button" type="submit">
+              Submit
+            </Button>
+          </div>
+        </Form>
       </div>
     </>
   );

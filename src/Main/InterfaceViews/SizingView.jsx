@@ -1,40 +1,60 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import SizingViewContent from "../Sizing/Sizing/SizingViewContent";
 import SizingFormView from "../Sizing/Sizing/SizingFormView";
+import SearchMetersView from "./SearchMetersView";
 
 import styles from "../InterfaceContent.module.css";
 
 import { Tabs, TabList, Tab, TabPanel, TabPanels } from "@carbon/react";
 
+import { MeterContext } from "../Interface";
+import { useNotification } from "../../Notification/NotificationProvider";
+import { API_URL } from "../Interface";
+
 function SizingViewTabbed() {
-  return (
+  const { meters, _ } = useContext(MeterContext);
+  return meters.length > 0 ? (
     <>
-      <Tabs>
-        <TabList aria-label="List of tabs">
-          <Tab className={styles.tab}>Sizing</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <SizingView />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+      <div className="card-wrapper">
+        <Tabs>
+          <TabList aria-label="List of tabs">
+            <Tab className={styles.tab}>Sizing</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <SizingView />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </div>
     </>
+  ) : (
+    <SearchMetersView></SearchMetersView>
   );
 }
 
 function SizingView() {
+  const notification = useNotification();
+  const { meters, _ } = useContext(MeterContext);
   const [fetchData, setFetchData] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [meterId, setMeterId] = useState("default");
   const [formData, setFormData] = useState({
     start_datetime: null,
     end_datetime: null,
-    nr_representative_days: 0,
-    meter_ids: [],
+    nr_representative_days: 1,
+    meter_ids: meters,
     sizing_params_by_meter: null,
   });
-  useEffect(() => getOrderData(orderId, setFetchData), [orderId]);
+
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, meter_ids: meters }));
+  }, [meters]);
+
+  useEffect(
+    () => getOrderData(orderId, setFetchData, notification, 3),
+    [orderId]
+  );
   return fetchData ? (
     <SizingViewContent
       data={fetchData}
@@ -44,26 +64,27 @@ function SizingView() {
     />
   ) : (
     <SizingFormView
-      onSubmit={(hasAssets) => getOrder(setOrderId, hasAssets, setMeterId, formData)}
+      onSubmit={(hasAssets) => {
+        getOrder(setOrderId, hasAssets, setMeterId, formData, notification);
+      }}
       setFormData={setFormData}
       formData={formData}
     />
   );
 }
 
-function getOrder(setOrderId, hasAssets, setMeterId, formData) {
+function getOrder(setOrderId, hasAssets, setMeterId, formData, notification) {
   const path = hasAssets
     ? "sizing_with_shared_assets"
     : "sizing_without_shared_assets";
   console.log(formData);
   if (
-    formData.start_date !== null &&
-    formData.end_date !== null &&
+    formData.start_datetime !== null &&
+    formData.end_datetime !== null &&
     formData.meter_ids.length !== 0
   ) {
-    console.log(formData);
     document.body.style.cursor = "wait";
-    fetch(`http://localhost:8000/${path}`, {
+    fetch(API_URL['SIZING'] + `/${path}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -77,14 +98,17 @@ function getOrder(setOrderId, hasAssets, setMeterId, formData) {
       })
       .then((data) => {
         setOrderId(data.order_id);
+        setMeterId(Array.from(formData.meter_ids)[0]);
       })
       .catch((error) => {
+        document.body.style.cursor = "default";
         if (typeof error.json === "function") {
           error
             .json()
             .then((jsonError) => {
               console.log("Json error from API");
               console.log(jsonError.detail);
+              notification.setNotification(jsonError.detail.message);
             })
             .catch((_) => {
               console.log("Generic error from API");
@@ -95,14 +119,16 @@ function getOrder(setOrderId, hasAssets, setMeterId, formData) {
           console.log(error);
         }
       });
-
-    setMeterId(Array.from(formData.meter_ids)[0]);
+  } else {
+    notification.setNotification(
+      "Please fill all required fields before submitting."
+    );
   }
 }
 
-function getOrderData(orderId, setFetchData) {
-  if (orderId !== null) {
-    fetch(`http://localhost:8000/get_sizing/${orderId}`)
+function getOrderData(orderId, setFetchData, notification, retrys) {
+  if (orderId !== null && retrys > 0) {
+    fetch(API_URL['SIZING'] + `/get_sizing/${orderId}`)
       .then((res) => {
         if (res.status !== 200) {
           return Promise.reject(res);
@@ -110,8 +136,13 @@ function getOrderData(orderId, setFetchData) {
         return res.json();
       })
       .then((data) => {
+        if (data.milp_status !== "Optimal") {
+          notification.setNotification(
+            "Something went wrong. Please try again."
+          );
+          return;
+        }
         setFetchData(data);
-        document.body.style.cursor = "default";
       })
       .catch((error) => {
         if (typeof error.json === "function") {
@@ -120,14 +151,25 @@ function getOrderData(orderId, setFetchData) {
             .then((jsonError) => {
               console.log("Json error from API");
               console.log(jsonError);
+              notification.setNotification(jsonError.message);
               if (error.status > 200 && error.status < 300)
                 return new Promise(() => {
-                  setTimeout(() => getOrderData(orderId, setFetchData), 1000);
+                  setTimeout(
+                    () =>
+                      getOrderData(
+                        orderId,
+                        setFetchData,
+                        notification,
+                        retrys - 1
+                      ),
+                    5000
+                  );
                 });
             })
             .catch((_) => {
               console.log("Generic error from API");
-              console.log(error.statusText);
+              console.log(error);
+              notification.setNotification(error.statusText);
             });
         } else {
           console.log("Fetch error");
@@ -135,6 +177,8 @@ function getOrderData(orderId, setFetchData) {
         }
       });
   }
+
+  document.body.style.cursor = "default";
 }
 
 export default SizingViewTabbed;

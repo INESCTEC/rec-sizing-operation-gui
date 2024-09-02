@@ -55,7 +55,7 @@ export default function LoopViewContent({ meterId, setMeterId, ids, data }) {
           <OperationKPI meter_id={meterId} data={data}></OperationKPI>
         </div>
       </div>
-      <DownloadCSV data={data.lem_prices} fileName={"lem_prices"} />
+      <DownloadCSV data={data} fileName={"data"} />
     </>
   );
 }

@@ -18,7 +18,7 @@ function VanillaViewContent({ data }) {
           <OfferTable offers={data.offers} />
         </div>
       </div>
-      <DownloadCSV data={data.lem_prices} fileName={"lem_prices"} />
+      <DownloadCSV data={data} fileName={"data"} />
     </>
   );
 }

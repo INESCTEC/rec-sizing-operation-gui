@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./LeftNavBar.module.css";
 import LeftNavBarItem from "./LeftNavBarItem";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   DataTable,
   ChevronLeft,
@@ -11,25 +11,32 @@ import {
 } from "@carbon/icons-react";
 import { useLocation } from "react-router-dom";
 
-function LeftNavBar({ hidden, setHidden }) {
-  var [selected, setSelected] = useState(useLocation().pathname);
-  var buttons = [
+function LeftNavBar() {
+  const [hidden, setHidden] = useState(true);
+  const [selected, setSelected] = useState();
+  const buttons = [
     {
       text: "Pricing",
-      link: "/pricing",
+      link: "pricing",
       icon: <PricingTraditional />,
     },
     {
       text: "Sizing",
-      link: "/sizing",
+      link: "sizing",
       icon: <DataTable />,
     },
     {
       text: "Search Meters",
-      link: "/meters",
+      link: "meters",
       icon: <Search />,
     },
   ];
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setSelected(location.pathname.split('/')[2]);
+  }, [location.pathname]);
 
   const buttonClassName = (button) =>
     selected === button["link"] ? styles.buttonSelected : styles.button;
@@ -40,15 +47,12 @@ function LeftNavBar({ hidden, setHidden }) {
 
   return (
     <>
-      <div className={`${navBarContainerStyles} column flex-space-between`}>
+      <div className={`${navBarContainerStyles}`}>
         <ul className={styles.navBar}>
           {buttons.map((button) => (
             <li className={buttonClassName(button)} key={button["link"]}>
               <Link
                 tabIndex="-1"
-                onClick={() => {
-                  setSelected(button["link"]);
-                }}
                 to={button["link"]}
                 className={styles.link}
               >

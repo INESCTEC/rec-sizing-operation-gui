@@ -17,23 +17,31 @@ function OfferTable({ offers }) {
     },
     {
       key: "amount",
-      header: "Amount (KWH)",
+      header: "Amount (kWh)",
     },
     {
       key: "value",
-      header: "Price (€/KWH)",
+      header: "Price (€/kWh)",
     },
   ];
 
   const items = offers.map((offer) => ({
     id: offer.meter_id + offer.datetime,
-    datetime: new Date(offer.datetime).toUTCString(),
+    datetime: new Date(offer.datetime).toLocaleTimeString([], {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
     meter_id: offer.meter_id,
     type: offer.type.toUpperCase(),
     amount: offer.amount,
     value: offer.value,
   }));
 
+
+  console.log(items);
   return (
     <>
       <div className={styles.tableContainer}>

@@ -6,15 +6,27 @@ import {
   TableHeader,
   TableBody,
   TableCell,
+  Popover,
+  PopoverContent
 } from "@carbon/react";
+
+import { InformationFilled } from "@carbon/icons-react";
+import React from "react";
 
 import styles from "./TableWrapper.module.css";
 
-function TableWrapper({ title, items, headers }) {
+function TableWrapper({ title, items, headers, description }) {
   return (
     <>
       <div className={styles.tableWrapper}>
-        <p className={styles.tableTitle}>{title}</p>
+        <div className="row flex-center"><p className={styles.tableTitle} style={{paddingRight: "5px", paddingBottom: "2px"}}>{title}</p>
+        {description ? (
+          <>
+            <PopOver description={description}/>
+          </>
+        ) : undefined}
+        </div>
+        
         <DataTable headers={headers} rows={items}>
           {({ rows, headers, getTableProps }) => (
             <Table {...getTableProps()}>
@@ -45,3 +57,24 @@ function TableWrapper({ title, items, headers }) {
 }
 
 export default TableWrapper;
+
+function PopOver({description}) {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <Popover open={open} autoAlign={true}>
+      <span
+        onMouseEnter={() => {
+          setOpen(true);
+        }}
+        onMouseLeave={() => {
+          setOpen(false);
+        }}>
+        <InformationFilled/>
+      </span>
+      <PopoverContent className="padding-1-rem">
+        {description}
+      </PopoverContent>
+    </Popover>
+  );
+}

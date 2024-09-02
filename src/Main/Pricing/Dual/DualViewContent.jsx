@@ -11,7 +11,6 @@ export default function DualViewData({ meterId, setMeterId, ids, data }) {
   const lem_prices = data["lem_prices"];
   const meter_outputs = data["meter_outputs"];
   const lem_transactions = data["lem_transactions"];
-  console.log(lem_transactions);
   return (
     <>
       <div className="row flex-center flex-space-between padding-1rem">
@@ -57,7 +56,7 @@ export default function DualViewData({ meterId, setMeterId, ids, data }) {
           <OperationKPI meter_id={meterId} data={data}></OperationKPI>
         </div>
       </div>
-      <DownloadCSV data={data.lem_prices} fileName={"lem_prices"} />
+      <DownloadCSV data={data} fileName={"data"} />
     </>
   );
 }

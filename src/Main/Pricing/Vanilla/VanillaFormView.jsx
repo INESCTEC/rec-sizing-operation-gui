@@ -10,47 +10,44 @@ import {
 } from "@carbon/react";
 import styles from "../../InterfaceContent.module.css";
 import { useState } from "react";
-import MeterInput from "../MeterInput";
+import MeterInput from "../../SharedModules/MeterInput";
 
 function VanillaFormView({ onSubmit, setFormData }) {
   const setDates = (dates) => {
     if (dates.length > 1) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        start_datetime: "2024-05-16T00:00:00Z", //dates[0]
-        end_datetime: "2024-05-16T00:45:00Z", //dates[1]
+        //start_datetime: dates[0],
+        //end_datetime: dates[1],
+        "start_datetime": "2024-05-16T00:00:00Z",
+        "end_datetime": "2024-05-16T00:45:00Z",
       }));
     }
   };
-
-  const [meters, setMeters] = useState([]);
 
   const [select, setSelect] = useState("default");
   const options = ["crossing_value", "mmr", "sdr"];
 
   return (
     <>
-      <div className="card-wrapper">
-        <div className="card-header"></div>
-        <div className="card-body">
-          <div className={styles.formWrapper}>
-            <Form
-              aria-label="sample form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                const meter_ids = meters.map((v) => v.meter);
-                setFormData((prev) => ({
-                  ...prev,
-                  meter_ids: meter_ids,
-                }));
-                onSubmit(select);
-              }}
-            >
+      <div className={styles.formWrapper}>
+        <Form
+          aria-label="sample form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit(select);
+          }}
+        >
+          <div className="card-wrapper">
+            <div className="card-header">
+              <p>Dates</p>
+            </div>
+            <div className="card-body">
               <Stack gap={7}>
                 <DatePicker
                   datePickerType="range"
                   dateFormat="d/m/Y"
-                  onChange={(dates) => setDates(dates)}
+                  onClose={(dates) => setDates(dates)}
                 >
                   <DatePickerInput
                     id="date-picker-input-id-start"
@@ -72,25 +69,29 @@ function VanillaFormView({ onSubmit, setFormData }) {
                   className={styles.select}
                   defaultValue={select}
                   onChange={(e) => setSelect(e.target.value)}
+                  labelText="Pricing Mechanism"
                 >
                   <SelectItem
                     disabled
                     hidden
                     value="default"
-                    text="Choose an option"
+                    text="Choose pricing mechanism"
                   />
                   {options.map((option) => (
                     <SelectItem key={option} value={option} text={option} />
                   ))}
                 </Select>
-                <MeterInput meters={meters} setMeter={setMeters}></MeterInput>
-                <Button className="primary-button" type="submit">
-                  Submit
-                </Button>
               </Stack>
-            </Form>
+            </div>
           </div>
-        </div>
+          <MeterInput></MeterInput>
+
+          <div className="row flex-just-end">
+            <Button className="primary-button" type="submit">
+              Submit
+            </Button>
+          </div>
+        </Form>
       </div>
     </>
   );
