@@ -12,8 +12,8 @@ import { useNotification } from "../../Notification/NotificationProvider";
 import { API_URL } from "../Interface";
 
 function SizingViewTabbed() {
-  const { meters, _ } = useContext(MeterContext);
-  return meters.length > 0 ? (
+  const { allMeters, _ } = useContext(MeterContext);
+  return allMeters.length > 0 ? (
     <>
       <div className="card-wrapper">
         <Tabs>
@@ -35,20 +35,27 @@ function SizingViewTabbed() {
 
 function SizingView() {
   const notification = useNotification();
-  const { meters, _ } = useContext(MeterContext);
+  const { meters, dataset } = useContext(MeterContext);
   const [fetchData, setFetchData] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [meterId, setMeterId] = useState("default");
   const [formData, setFormData] = useState({
     start_datetime: null,
     end_datetime: null,
+    //dataset_origin: dataset,
     nr_representative_days: 1,
     meter_ids: meters,
     sizing_params_by_meter: null,
   });
 
+
+  //TODO Update here to the commented code to use non-testing data
   useEffect(() => {
-    setFormData((prev) => ({ ...prev, meter_ids: meters }));
+    setFormData((prev) => ({
+      ...prev,
+      //meter_ids: meters
+      meter_ids: ["Meter#1", "Meter#2"],
+    }));
   }, [meters]);
 
   useEffect(
@@ -84,7 +91,7 @@ function getOrder(setOrderId, hasAssets, setMeterId, formData, notification) {
     formData.meter_ids.length !== 0
   ) {
     document.body.style.cursor = "wait";
-    fetch(API_URL['SIZING'] + `/${path}`, {
+    fetch(API_URL["SIZING"] + `/${path}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -128,7 +135,7 @@ function getOrder(setOrderId, hasAssets, setMeterId, formData, notification) {
 
 function getOrderData(orderId, setFetchData, notification, retrys) {
   if (orderId !== null && retrys > 0) {
-    fetch(API_URL['SIZING'] + `/get_sizing/${orderId}`)
+    fetch(API_URL["SIZING"] + `/get_sizing/${orderId}`)
       .then((res) => {
         if (res.status !== 200) {
           return Promise.reject(res);

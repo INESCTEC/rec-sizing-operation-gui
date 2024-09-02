@@ -7,7 +7,7 @@ import { useNotification } from "../../Notification/NotificationProvider";
 import { API_URL } from "../Interface";
 
 function DualView() {
-  const { meters } = useContext(MeterContext);
+  const { meters, dataset } = useContext(MeterContext);
 
   const notification = useNotification();
   const [fetchData, setFetchData] = useState(null);
@@ -17,15 +17,17 @@ function DualView() {
     start_datetime: null,
     end_datetime: null,
     meter_ids: meters,
-    dataset_origin: "SEL",
+    dataset_origin: dataset,
     sdr_compensation: 0,
     mmr_divisor: 2,
   });
 
+  //TODO Update here to the commented code to use non-testing data
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      meter_ids: meters,
+      //meter_ids: meters
+      meter_ids: ["Meter#1", "Meter#2"],
     }));
   }, [meters]);
   useEffect(

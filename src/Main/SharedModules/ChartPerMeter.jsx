@@ -23,7 +23,7 @@ function ChartPerMeter({
   const energy_supplied_l = [];
   const net_load_l = [];
   const tableData = {};
-  console.log(lem_transactions)
+  
   for (let key in meter_inputs) {
     const {
       meter_id,

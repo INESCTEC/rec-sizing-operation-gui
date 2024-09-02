@@ -6,4 +6,8 @@ Run `npm run dev` for dev server
 The interface should now be available [here](http://localhost:5173/login).
 
 ## Update API URLs
-To update the API URLs go to ['/src/Main/Interface.jsx'](https://gitlab.inesctec.pt/cpes/european-projects/enershare/enershare-ui/-/blob/main/src/Main/Interface.jsx) and change the dictionary values to the corresponding URLs.
+To update the API URLs go to [/src/Main/Interface.jsx](https://gitlab.inesctec.pt/cpes/european-projects/enershare/enershare-ui/-/blob/main/src/Main/Interface.jsx) and change the dictionary values to the corresponding URLs.
+
+## Examplet results only
+Currently only working with temporary data.
+Search Meters with `SEL` as meter origin to get example results.

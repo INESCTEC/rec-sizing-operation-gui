@@ -9,21 +9,20 @@ import { useEffect, useState, useContext } from "react";
 import { MeterContext } from "../Interface";
 
 function PricingView() {
-  const [state, setState] = useState("Vanilla");
-  const { meters, _ } = useContext(MeterContext);
+  const { allMeters, _ } = useContext(MeterContext);
 
-  return meters.length > 0 ? (
+  return allMeters.length > 0 ? (
     <>
       <div className="card-wrapper">
         <Tabs>
           <TabList aria-label="List of tabs">
-            <Tab onClick={() => setState("Vanilla")} className={styles.tab}>
+            <Tab className={styles.tab}>
               Vanilla
             </Tab>
-            <Tab onClick={() => setState("Dual")} className={styles.tab}>
+            <Tab className={styles.tab}>
               Dual
             </Tab>
-            <Tab onClick={() => setState("Loop")} className={styles.tab}>
+            <Tab className={styles.tab}>
               Loop
             </Tab>
           </TabList>

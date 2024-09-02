@@ -7,26 +7,28 @@ import { API_URL } from "../Interface";
 
 function VanillaView() {
   const notification = useNotification();
-  const { meters, _ } = useContext(MeterContext);
+  const { meters, dataset } = useContext(MeterContext);
   const [fetchData, setFetchData] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [formData, setFormData] = useState({
     start_datetime: null,
     end_datetime: null,
-    meter_ids: [],
-    dataset_origin: "SEL",
+    meter_ids: meters,
+    dataset_origin: dataset,
     sdr_compensation: 0,
     mmr_divisor: 2,
   });
 
+  //TODO Update here to the commented code to use non-testing data
   useEffect(() => {
-    setFormData((prev) => ({ ...prev, meter_ids: meters }));
+    setFormData((prev) => ({
+      ...prev,
+      //meter_ids: meters
+      meter_ids: ["Meter#1", "Meter#2"],
+    }));
   }, [meters]);
 
-  useEffect(
-    () => getOrderData(orderId, setFetchData, notification),
-    [orderId]
-  );
+  useEffect(() => getOrderData(orderId, setFetchData, notification), [orderId]);
 
   return (
     <>
@@ -53,7 +55,7 @@ function getOrder(setOrderId, pricing_mechanism, formData, notification) {
     formData.meter_ids.length !== 0
   ) {
     document.body.style.cursor = "wait";
-    fetch(API_URL['PRICING'] + `/vanilla/${pricing_mechanism}`, {
+    fetch(API_URL["PRICING"] + `/vanilla/${pricing_mechanism}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -88,13 +90,15 @@ function getOrder(setOrderId, pricing_mechanism, formData, notification) {
         }
       });
   } else {
-    notification.setNotification("Please fill all required fields before submitting.");
+    notification.setNotification(
+      "Please fill all required fields before submitting."
+    );
   }
 }
 
 function getOrderData(orderId, setFetchData, notification) {
   if (orderId !== null) {
-    fetch(API_URL['PRICING'] + `/vanilla/${orderId}`)
+    fetch(API_URL["PRICING"] + `/vanilla/${orderId}`)
       .then((res) => {
         if (res.status !== 200) {
           return Promise.reject(res);
@@ -114,7 +118,10 @@ function getOrderData(orderId, setFetchData, notification) {
               notification.setNotification(jsonError.message);
               if (error.status > 200 && error.status < 300)
                 return new Promise(() => {
-                  setTimeout(() => getOrderData(orderId, setFetchData, notification), 5000);
+                  setTimeout(
+                    () => getOrderData(orderId, setFetchData, notification),
+                    5000
+                  );
                 });
             })
             .catch((_) => {

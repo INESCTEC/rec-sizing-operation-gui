@@ -18,19 +18,26 @@ function SearchMetersFormView({ onSubmit, setFormData }) {
           aria-label="sample form"
           onSubmit={(e) => {
             e.preventDefault();
-            setFormData((prev) => ({ ...prev, dataset_origin: select }));
             onSubmit();
           }}
         >
           <div className="card-wrapper">
-            <div className="card-header"><p>Parameters</p></div>
+            <div className="card-header">
+              <p>Parameters</p>
+            </div>
             <div className="card-body">
               <Stack gap={7}>
                 <Select
                   id="select-1"
                   className={styles.select}
                   defaultValue={select}
-                  onChange={(e) => setSelect(e.target.value)}
+                  onChange={(e) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      dataset_origin: e.target.value,
+                    }));
+                    setSelect(e.target.value);
+                  }}
                   labelText="Meter Origin"
                 >
                   <SelectItem

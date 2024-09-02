@@ -2,13 +2,12 @@ import { useEffect, useState, useContext } from "react";
 import LoopViewContent from "../Pricing/Loop/LoopViewContent";
 import LoopFormView from "../Pricing/Loop/LoopFormView";
 
-
 import { MeterContext } from "../Interface";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { API_URL } from "../Interface";
 
 function LoopView() {
-  const { meters } = useContext(MeterContext);
+  const { meters, dataset } = useContext(MeterContext);
 
   const notification = useNotification();
 
@@ -20,13 +19,18 @@ function LoopView() {
     start_datetime: null,
     end_datetime: null,
     meter_ids: meters,
-    dataset_origin: "SEL",
+    dataset_origin: dataset,
     sdr_compensation: 0,
     mmr_divisor: 2,
   });
 
+  //TODO Update here to the commented code to use non-testing data
   useEffect(() => {
-    setFormData((prev) => ({ ...prev, meter_ids: meters }));
+    setFormData((prev) => ({
+      ...prev,
+      //meter_ids: meters
+      meter_ids: ["Meter#1", "Meter#2"],
+    }));
   }, [meters]);
   useEffect(
     () => getOrderData(orderId, lemOrganization, setFetchData, notification),
@@ -75,7 +79,7 @@ function getOrder(
   ) {
     document.body.style.cursor = "wait";
     fetch(
-      API_URL['PRICING'] + `/loop/${lemOrganization}/${pricing_mechanism}`,
+      API_URL["PRICING"] + `/loop/${lemOrganization}/${pricing_mechanism}`,
       {
         headers: {
           Accept: "application/json",
@@ -113,13 +117,15 @@ function getOrder(
 
     setMeterId(Array.from(formData.meter_ids)[0]);
   } else {
-    notification.setNotification("Please fill all required fields before submitting.");
+    notification.setNotification(
+      "Please fill all required fields before submitting."
+    );
   }
 }
 
 function getOrderData(orderId, lemOrganization, setFetchData, notification) {
   if (orderId !== null) {
-    fetch(API_URL['PRICING'] + `/loop/${lemOrganization}/${orderId}`)
+    fetch(API_URL["PRICING"] + `/loop/${lemOrganization}/${orderId}`)
       .then((res) => {
         if (res.status !== 200) {
           return Promise.reject(res);
@@ -129,13 +135,14 @@ function getOrderData(orderId, lemOrganization, setFetchData, notification) {
       .then((data) => {
         //TODO ask user to rerun
         if (data.milp_status !== "Optimal") {
-          notification.setNotification("Something went wrong. Please try again.");
+          notification.setNotification(
+            "Something went wrong. Please try again."
+          );
           return;
         }
         setFetchData(data);
       })
       .catch((error) => {
-
         document.body.style.cursor = "default";
         if (typeof error.json === "function") {
           error
@@ -144,10 +151,16 @@ function getOrderData(orderId, lemOrganization, setFetchData, notification) {
               console.log("Json error from API");
               console.log(jsonError);
               notification.setNotification(jsonError.message);
-              if (error.status > 200 && error.status < 300){
+              if (error.status > 200 && error.status < 300) {
                 return new Promise(() => {
                   setTimeout(
-                    () => getOrderData(orderId, lemOrganization, setFetchData, notification),
+                    () =>
+                      getOrderData(
+                        orderId,
+                        lemOrganization,
+                        setFetchData,
+                        notification
+                      ),
                     5000
                   );
                 });
