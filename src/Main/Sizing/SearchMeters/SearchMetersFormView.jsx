@@ -53,8 +53,10 @@ function SearchMetersFormView({ onSubmit, setFormData }) {
                   id="Latitude"
                   label="Latitude"
                   className={styles.numberInput}
-                  min={0}
-                  value={0}
+                  step={0.000000000000001}
+                  min={-90.0}
+                  max={90.0}
+                  value={0.0}
                   onChange={(_, state) =>
                     setFormData((prev) => ({
                       ...prev,
@@ -69,8 +71,10 @@ function SearchMetersFormView({ onSubmit, setFormData }) {
                   id="Longitude"
                   label="Longitude"
                   className={styles.numberInput}
-                  min={0}
-                  value={0}
+                  step={0.000000000000001}
+                  min={-180.0}
+                  max={180.0}
+                  value={0.0}
                   onChange={(_, state) =>
                     setFormData((prev) => ({
                       ...prev,

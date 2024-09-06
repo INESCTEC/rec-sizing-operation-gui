@@ -6,8 +6,8 @@ import PricingView from "./InterfaceViews/PricingView";
 import SizingViewTabbed from "./InterfaceViews/SizingView";
 
 export const API_URL = {
-  SIZING : 'http://localhost:8000',
-  PRICING : 'http://localhost:8001'
+  PRICING : 'http://localhost:8000',
+  SIZING : 'http://localhost:8001'
 }
 
 
