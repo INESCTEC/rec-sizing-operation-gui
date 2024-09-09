@@ -17,8 +17,10 @@ function VanillaFormView({ onSubmit, setFormData }) {
     if (dates.length > 1) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        start_datetime: dates[0],
-        end_datetime: dates[1],
+        //start_datetime: dates[0],
+        //end_datetime: dates[1],
+        "start_datetime": "2024-05-16T00:00:00Z",
+        "end_datetime": "2024-05-16T00:45:00Z",
       }));
     }
   };
