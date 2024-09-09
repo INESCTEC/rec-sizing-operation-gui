@@ -19,12 +19,10 @@ function VanillaView() {
     mmr_divisor: 2,
   });
 
-  //TODO Update here to the commented code to use non-testing data
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      //meter_ids: meters
-      meter_ids: ["Meter#1", "Meter#2"],
+      meter_ids: meters
     }));
   }, [meters]);
 
