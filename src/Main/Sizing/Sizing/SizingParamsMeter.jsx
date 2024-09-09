@@ -73,7 +73,7 @@ function SizingParamsMeter({ id, addMeter }) {
           </div>
         </div>
         <div>
-          <p className="bold margin-bot-0-8rem">Battery</p>
+          <p className="bold margin-bot-0-8rem">PV</p>
           <div className={styles.sizingParamsWrapper}>
             <div className={styles.sizingParams} key={"spsm"}>
               {Object.entries(meter)
