@@ -38,7 +38,7 @@ function SizingParamsSharedMeter({ meterList, selected, setFormData }) {
     soc_max: "Maximum state-of-charge of the battery to be installed, in %.",
     eff_bc: "Charging efficiency of the battery to be installed, in %.",
     eff_bd: "Discharging efficiency of the battery to be installed, in %.",
-    deg_cost: "Degradation cost of the battery to be installed, in %.",
+    deg_cost: "Degradation cost of the battery to be installed, in €/kWh.",
   };
 
   const descriptionB = {
