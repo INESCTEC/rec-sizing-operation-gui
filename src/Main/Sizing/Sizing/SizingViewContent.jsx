@@ -12,7 +12,7 @@ function SizingViewContent({ meterId, setMeterId, ids, data }) {
   const meter_outputs = data["meter_operation_outputs"];
   const lem_transactions = data["lem_transactions"];
 
-  const meter_investments_outputs = data["meter_investments_outputs"];
+  const meter_investment_outputs = data["meter_investment_outputs"];
   const outputs_by_id = {};
 
   const member_costs = data["member_costs"];
@@ -29,7 +29,7 @@ function SizingViewContent({ meterId, setMeterId, ids, data }) {
   ];
 
   let sorted_ids = ids.sort();
-  let sorted_inv_outputs = meter_investments_outputs.sort((v1, v2) =>
+  let sorted_inv_outputs = meter_investment_outputs.sort((v1, v2) =>
     v1.meter_id.localeCompare(v2.meter_id)
   );
 

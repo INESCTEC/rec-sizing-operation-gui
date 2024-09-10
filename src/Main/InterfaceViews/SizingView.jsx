@@ -56,7 +56,7 @@ function SizingView() {
   }, [meters]);
 
   useEffect(
-    () => getOrderData(orderId, setFetchData, notification, 3),
+    () => getOrderData(orderId, setFetchData, notification),
     [orderId]
   );
   return fetchData ? (
@@ -130,8 +130,8 @@ function getOrder(setOrderId, hasAssets, setMeterId, formData, notification) {
   }
 }
 
-function getOrderData(orderId, setFetchData, notification, retrys) {
-  if (orderId !== null && retrys > 0) {
+function getOrderData(orderId, setFetchData, notification) {
+  if (orderId !== null) {
     fetch(API_URL["SIZING"] + `/get_sizing/${orderId}`)
       .then((res) => {
         if (res.status !== 200) {
@@ -163,8 +163,7 @@ function getOrderData(orderId, setFetchData, notification, retrys) {
                       getOrderData(
                         orderId,
                         setFetchData,
-                        notification,
-                        retrys - 1
+                        notification
                       ),
                     5000
                   );
