@@ -42,7 +42,7 @@ function SizingView() {
   const [formData, setFormData] = useState({
     start_datetime: null,
     end_datetime: null,
-    //dataset_origin: dataset,
+    dataset_origin: dataset,
     nr_representative_days: 1,
     meter_ids: meters,
     sizing_params_by_meter: null,
