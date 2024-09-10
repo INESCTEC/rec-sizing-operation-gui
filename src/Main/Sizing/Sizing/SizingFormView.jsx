@@ -144,7 +144,6 @@ function SizingFormView({ onSubmit, setFormData }) {
                     <div className="card-body">
                       <SizingParamsSharedMeter
                         setFormData={setFormData}
-                        meterList={allMeters}
                         selected={meters}
                       />
                     </div>
