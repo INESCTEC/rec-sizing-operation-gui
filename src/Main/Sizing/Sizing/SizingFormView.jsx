@@ -5,18 +5,18 @@ import {
   Stack,
   Button,
   NumberInput,
-  Checkbox,
+  Accordion,
+  AccordionItem,
 } from "@carbon/react";
 import styles from "../../InterfaceContent.module.css";
 import SizingParamsMeterList from "./SizingParamsMeterList";
 import SizingParamsSharedMeter from "./SizingParamsSharedMeter";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import MeterInput from "../../SharedModules/MeterInput";
 import { MeterContext } from "../../Interface";
 
 function SizingFormView({ onSubmit, setFormData }) {
   const { meters, allMeters } = useContext(MeterContext);
-  const [hasSharedMeter, setHasSharedMeter] = useState(false);
   const [numDays, setNumDays] = useState(1);
   const setDates = (dates) => {
     if (dates.length > 1) {
@@ -47,6 +47,7 @@ function SizingFormView({ onSubmit, setFormData }) {
     }));
   };
 
+  /*
   const removeSharedMeter = () => {
     setFormData((prevFormData) => {
       const form = { ...prevFormData };
@@ -54,6 +55,62 @@ function SizingFormView({ onSubmit, setFormData }) {
       delete form.ownerships;
       return form;
     });
+  };
+*/
+
+  const [serialNumber, setSerialNumber] = useState(0);
+  const [sharedMeters, setSharedMeter] = useState({});
+
+  const addSharedMeter = (id, meter) =>
+    setSharedMeter((prev) => {
+      let newSharedMeters = { ...prev };
+      newSharedMeters[id] = meter;
+      return newSharedMeters;
+    });
+
+  const updateSharedMeter = (id, key, value) => {
+    setSharedMeter((prev) => {
+      let newSharedMeters = { ...prev };
+      newSharedMeters[id].sizing_params_by_shared_meter[key] = value;
+      return newSharedMeters;
+    });
+  };
+
+  const updateOwnerships = (id, value) => {
+    setSharedMeter((prev) => {
+      let newSharedMeters = { ...prev };
+      newSharedMeters[id].ownerships = value;
+      return newSharedMeters;
+    });
+  };
+
+  const removeSharedMeter = (id) =>
+    setSharedMeter((prev) => {
+      let newSharedMeters = { ...prev };
+      delete newSharedMeters[id];
+      return newSharedMeters;
+    });
+
+  useEffect(() => setSharedForm(), [sharedMeters]);
+
+  const setSharedForm = () => {
+    setFormData((prev) => ({
+      ...prev,
+      shared_meter_ids: Object.values(sharedMeters).map(
+        (obj) => obj.sizing_params_by_shared_meter.meter_id
+      ),
+      ownerships: Object.values(sharedMeters)
+        .map((obj) =>
+          obj.ownerships.map((own) => ({
+            ...own,
+            shared_meter_id: obj.sizing_params_by_shared_meter.meter_id,
+          }))
+        )
+        .flat(),
+      sizing_params_by_shared_meter: Object.values(sharedMeters).map(
+        (obj) => obj.sizing_params_by_shared_meter
+      ),
+    }));
   };
 
   return (
@@ -63,7 +120,8 @@ function SizingFormView({ onSubmit, setFormData }) {
           aria-label="sample form"
           onSubmit={(e) => {
             e.preventDefault();
-            onSubmit(hasSharedMeter);
+            setSharedForm();
+            onSubmit(Object.keys(sharedMeters).length > 0);
           }}
         >
           <div className="card-wrapper">
@@ -92,22 +150,25 @@ function SizingFormView({ onSubmit, setFormData }) {
                     autoComplete="off"
                   />
                 </DatePicker>
-                <span style={{ width: "100%", gap: "10px", alignItems:"flex-end" }} className="row">
+                <span
+                  style={{ width: "100%", gap: "10px", alignItems: "flex-end" }}
+                  className="row"
+                >
                   <span>
-                  <NumberInput
-                    label="Number of Representative Days"
-                    placeholder="1"
-                    id="number-input"
-                    min={1}
-                    value={numDays}
-                    max={numDays}
-                    onChange={(_, state) => setDay(state.value)}
-                  ></NumberInput>
+                    <NumberInput
+                      label="Number of Representative Days"
+                      placeholder="1"
+                      id="number-input"
+                      min={1}
+                      value={numDays}
+                      max={numDays}
+                      onChange={(_, state) => setDay(state.value)}
+                    ></NumberInput>
                   </span>
                   <div
                     style={{
                       fontSize: "0.9rem",
-                      paddingBottom: "12px"
+                      paddingBottom: "12px",
                     }}
                   >
                     Maximum days: {numDays}
@@ -123,37 +184,72 @@ function SizingFormView({ onSubmit, setFormData }) {
               <p>Meters Parameters</p>
             </div>
             <div className="card-body">
-
               <SizingParamsMeterList setMeterParams={setMeterParams} />
-              <Checkbox
-                labelText="With Shared Resources"
-                id="checkbox-0"
-                checked={hasSharedMeter}
-                onChange={(_, { checked }) => {
-                  setHasSharedMeter(checked);
-                  if (!checked) removeSharedMeter();
-                }}
-              />
-
-              {hasSharedMeter ? (
-                <span>
-                  <div className="card-wrapper">
-                    <div className="card-header">
-                      <p>Shared Meter</p>
-                    </div>
-                    <div className="card-body">
-                      <SizingParamsSharedMeter
-                        setFormData={setFormData}
-                        selected={meters}
-                      />
-                    </div>
-                  </div>
-                </span>
-              ) : undefined}
             </div>
           </div>
-          <div className="row flex-just-end">
-            <Button className="primary-button" type="submit">
+          {Object.keys(sharedMeters).length > 0 ? (
+                <div className="card-wrapper">
+                  <div className="card-header"><p>Shared Meters</p></div>
+                  <div className="card-body">
+                    <Accordion>
+                      {Object.keys(sharedMeters).map((currSerial) => (
+                        <AccordionItem
+                          key={currSerial + "accordion"}
+                          title={"Shared Meter"}
+                          open={true}
+                        >
+                          <SizingParamsSharedMeter
+                            updateSharedMeter={updateSharedMeter}
+                            updateOwnerships={updateOwnerships}
+                            removeSharedMeter={removeSharedMeter}
+                            serialNumber={currSerial}
+                            meterParams={
+                              sharedMeters[currSerial]
+                                .sizing_params_by_shared_meter
+                            }
+                            selected={meters}
+                          />
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </div>
+                </div>
+              ) : undefined}
+          <div className="row flex-space-between">
+          <Button
+                className="primary-button mt-1"
+                style={{
+                  justifyContent: "center",
+                  maxInlineSize: "100%",
+                }}
+                onClick={() => {
+                  addSharedMeter(serialNumber, {
+                    sizing_params_by_shared_meter: {
+                      meter_id: serialNumber,
+                      power_energy_ratio: 1,
+                      l_bic: 10,
+                      minimum_new_pv_power: 0,
+                      maximum_new_pv_power: 10,
+                      minimum_new_storage_capacity: 0,
+                      maximum_new_storage_capacity: 10,
+                      l_gic: 10,
+                      soc_min: 10,
+                      soc_max: 10,
+                      eff_bc: 10,
+                      eff_bd: 10,
+                      deg_cost: 10,
+                    },
+                    ownerships: meters.map((v) => ({
+                      meter_id: v,
+                      percentage: 0,
+                    })),
+                  });
+                  setSerialNumber((prev) => prev + 1);
+                }}
+              >
+                Add Shared Meter
+              </Button>
+            <Button className="primary-button mt-1" type="submit">
               Submit
             </Button>
           </div>

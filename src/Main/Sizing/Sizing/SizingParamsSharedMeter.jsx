@@ -4,30 +4,20 @@ import {
   Stack,
   Select,
   SelectItem,
+  Button
 } from "@carbon/react";
 
 import styles from "./SizingViewContent.module.css";
 import { useEffect, useState } from "react";
 
-function SizingParamsSharedMeter({ selected, setFormData }) {
-  const meter = {
-    meter_id: "",
-    power_energy_ratio: 1,
-    l_bic: 10,
-    minimum_new_pv_power: 0,
-    maximum_new_pv_power: 10,
-    minimum_new_storage_capacity: 0,
-    maximum_new_storage_capacity: 10,
-    l_gic: 10,
-    soc_min: 10,
-    soc_max: 10,
-    eff_bc: 10,
-    eff_bd: 10,
-    deg_cost: 10,
-  };
-
-  const [meterId, setMeterId] = useState("");
-
+function SizingParamsSharedMeter({
+  selected,
+  updateSharedMeter,
+  updateOwnerships,
+  removeSharedMeter,
+  meterParams,
+  serialNumber,
+}) {
   const descriptionA = {
     power_energy_ratio:
       "Power/energy [kW/kWh] ratio of the newly installed storage capacity.",
@@ -52,30 +42,19 @@ function SizingParamsSharedMeter({ selected, setFormData }) {
   const [error, setError] = useState(false);
   const [ownerships, setOwnerships] = useState(
     selected.map((v) => ({
-      shared_meter_id: meterId,
       meter_id: v,
       percentage: 0,
     }))
-  );
-
-  useEffect(
-    () =>
-      setFormData((prev) => ({
-        ...prev,
-        sizing_params_for_shared_meter: [meter],
-      })),
-    []
   );
 
   useEffect(() => {
     if (ownerships.length < selected.length) {
       setOwnerships((prev) => {
         return prev.concat({
-          shared_meter_id: meterId,
           meter_id: selected.filter(
             (m) => !prev.map((v) => v.meter_id).includes(m)
           )[0],
-          percentage: 10,
+          percentage: 0,
         });
       });
     } else if (ownerships.length > selected.length) {
@@ -96,20 +75,15 @@ function SizingParamsSharedMeter({ selected, setFormData }) {
       setOwnerships((prev) => {
         const nOwnerships = [...prev];
         nOwnerships[index] = {
-          shared_meter_id: prev[index].shared_meter_id,
           meter_id: meter_id,
           percentage: value,
         };
-        console.log(nOwnerships);
         return nOwnerships;
       });
       setError(false);
       let ownerships_cp = [...ownerships];
       ownerships_cp[index] = { ...ownerships[index], percentage: value };
-      setFormData((prev) => ({
-        ...prev,
-        ownerships: ownerships_cp,
-      }));
+      updateOwnerships(serialNumber, ownerships_cp);
     } else {
       setError(true);
     }
@@ -118,7 +92,7 @@ function SizingParamsSharedMeter({ selected, setFormData }) {
   return (
     <>
       <Stack gap={7}>
-        <div>
+        <div style={{display: 'flex', alignItems: 'end'}}>
           <TextInput
             id={"meter_id" + "spsm"}
             key={"meter_id" + "spsm"}
@@ -127,43 +101,39 @@ function SizingParamsSharedMeter({ selected, setFormData }) {
               "The string that unequivocally identifies the shared meter."
             }
             onChange={(e) => {
-              setFormData((prev) => ({
-                ...prev,
-                sizing_params_for_shared_meter: [{
-                  ...prev.sizing_params_for_shared_meter[0],
-                  meter_id: e.target.value,
-                }],
-                shared_meter_ids : [e.target.value]
-              }));
-              setMeterId(e.target.value);
-              setOwnerships((prev) =>
-                prev.map((v) => ({ ...v, shared_meter_id: e.target.value }))
-              );
+              updateSharedMeter(serialNumber, "meter_id", e.target.value);
             }}
           ></TextInput>
+          <Button
+            className="primary-button mr-1 ml-1"
+            style={{
+              justifyContent: "center",
+              maxInlineSize: "100%",
+              height: "1rem",
+            }}
+            onClick={() => {
+              removeSharedMeter(serialNumber);
+            }}
+          >
+            Remove Meter
+          </Button>
         </div>
         <div>
           <p className="bold margin-bot-0-8rem">Storage</p>
           <div className={styles.sizingParamsWrapper}>
             <div className={styles.sizingParams} key={"spsm"}>
-              {Object.entries(meter)
+              {Object.entries(meterParams)
                 .filter((m) => Object.keys(descriptionA).includes(m[0]))
                 .map(([key, value]) => (
                   <NumberInput
                     label={descriptionA[key]}
-                    id={key + meter.id + "s"}
-                    key={key + meter.id + "s"}
+                    id={key + serialNumber + "s"}
+                    key={key + serialNumber + "s"}
                     className={styles.numberInput}
                     min={0}
                     value={value}
                     onChange={(_, state) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        sizing_params_for_shared_meter: [{
-                          ...prev.sizing_params_for_shared_meter[0],
-                          [key]: state.value,
-                        }],
-                      }))
+                      updateSharedMeter(serialNumber, key, state.value)
                     }
                   />
                 ))}
@@ -174,25 +144,18 @@ function SizingParamsSharedMeter({ selected, setFormData }) {
           <p className="bold margin-bot-0-8rem">PV</p>
           <div className={styles.sizingParamsWrapper}>
             <div className={styles.sizingParams} key={"spsm"}>
-              {Object.entries(meter)
+              {Object.entries(meterParams)
                 .filter((m) => Object.keys(descriptionB).includes(m[0]))
                 .map(([key, value]) => (
                   <NumberInput
                     label={descriptionB[key]}
-                    id={key + meter.id + "s"}
-                    key={key + meter.id + "s"}
+                    id={key + serialNumber + "s"}
+                    key={key + serialNumber + "s"}
                     className={styles.numberInput}
                     min={0}
                     value={value}
-                    onSubmit={() => console.log("it works")}
                     onChange={(_, state) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        sizing_params_for_shared_meter: [{
-                          ...prev.sizing_params_for_shared_meter[0],
-                          [key]: state.value,
-                        }],
-                      }))
+                      updateSharedMeter(serialNumber, key, state.value)
                     }
                   />
                 ))}
