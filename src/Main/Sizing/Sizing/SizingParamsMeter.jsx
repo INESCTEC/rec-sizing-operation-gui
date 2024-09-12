@@ -33,7 +33,7 @@ function SizingParamsMeter({ id, addMeter }) {
     soc_max: "Maximum state-of-charge of the battery to be installed, in %.",
     eff_bc: "Charging efficiency of the battery to be installed, in %.",
     eff_bd: "Discharging efficiency of the battery to be installed, in %.",
-    deg_cost: "Degradation cost of the battery to be installed, in %.",
+    deg_cost: "Degradation cost of the battery to be installed, in €/kWh.",
   };
 
   const descriptionB = {
@@ -73,7 +73,7 @@ function SizingParamsMeter({ id, addMeter }) {
           </div>
         </div>
         <div>
-          <p className="bold margin-bot-0-8rem">Battery</p>
+          <p className="bold margin-bot-0-8rem">PV</p>
           <div className={styles.sizingParamsWrapper}>
             <div className={styles.sizingParams} key={"spsm"}>
               {Object.entries(meter)

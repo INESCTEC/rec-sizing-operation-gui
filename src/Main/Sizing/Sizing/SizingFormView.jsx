@@ -22,10 +22,8 @@ function SizingFormView({ onSubmit, setFormData }) {
     if (dates.length > 1) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        // start_datetime: dates[0],
-        // end_datetime: dates[1],
-        "start_datetime": "2024-05-16T00:00:00Z",
-        "end_datetime": "2024-05-16T00:45:00Z",
+        start_datetime: dates[0],
+        end_datetime: dates[1],
       }));
       let days = Math.round(
         (dates[1].getTime() - dates[0].getTime()) / (1000 * 3600 * 24)
@@ -146,7 +144,6 @@ function SizingFormView({ onSubmit, setFormData }) {
                     <div className="card-body">
                       <SizingParamsSharedMeter
                         setFormData={setFormData}
-                        meterList={allMeters}
                         selected={meters}
                       />
                     </div>

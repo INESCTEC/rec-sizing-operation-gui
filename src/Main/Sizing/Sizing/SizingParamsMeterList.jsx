@@ -8,11 +8,7 @@ import { Accordion, AccordionItem } from "@carbon/react";
 export default function SizingParamsMeterList({ setMeterParams }) {
   const [meterList, setMeterList] = useState([]);
 
-  //TODO Update here to the commented code to use non-testing data
-
-  //const { meters, setMeters } = useContext(MeterContext);
-  const meters = ["Meter#1", "Meter#2"]
-  
+  const { meters, setMeters } = useContext(MeterContext);
 
   const addMeter = (meter) =>
     setMeterList((prev) => prev.concat({ id: meter.id, meter: meter }));

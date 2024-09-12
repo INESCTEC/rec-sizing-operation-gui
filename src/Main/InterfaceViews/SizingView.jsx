@@ -42,24 +42,21 @@ function SizingView() {
   const [formData, setFormData] = useState({
     start_datetime: null,
     end_datetime: null,
-    //dataset_origin: dataset,
+    dataset_origin: dataset,
     nr_representative_days: 1,
     meter_ids: meters,
     sizing_params_by_meter: null,
   });
 
-
-  //TODO Update here to the commented code to use non-testing data
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      //meter_ids: meters
-      meter_ids: ["Meter#1", "Meter#2"],
+      meter_ids: meters
     }));
   }, [meters]);
 
   useEffect(
-    () => getOrderData(orderId, setFetchData, notification, 3),
+    () => getOrderData(orderId, setFetchData, notification),
     [orderId]
   );
   return fetchData ? (
@@ -133,8 +130,8 @@ function getOrder(setOrderId, hasAssets, setMeterId, formData, notification) {
   }
 }
 
-function getOrderData(orderId, setFetchData, notification, retrys) {
-  if (orderId !== null && retrys > 0) {
+function getOrderData(orderId, setFetchData, notification) {
+  if (orderId !== null) {
     fetch(API_URL["SIZING"] + `/get_sizing/${orderId}`)
       .then((res) => {
         if (res.status !== 200) {
@@ -166,8 +163,7 @@ function getOrderData(orderId, setFetchData, notification, retrys) {
                       getOrderData(
                         orderId,
                         setFetchData,
-                        notification,
-                        retrys - 1
+                        notification
                       ),
                     5000
                   );

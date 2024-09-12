@@ -9,8 +9,8 @@ import {
 import styles from "./SizingViewContent.module.css";
 import { useEffect, useState } from "react";
 
-function SizingParamsSharedMeter({ meterList, selected, setFormData }) {
-  const [meter, setMeter] = useState({
+function SizingParamsSharedMeter({ selected, setFormData }) {
+  const meter = {
     meter_id: "",
     power_energy_ratio: 1,
     l_bic: 10,
@@ -24,7 +24,9 @@ function SizingParamsSharedMeter({ meterList, selected, setFormData }) {
     eff_bc: 10,
     eff_bd: 10,
     deg_cost: 10,
-  });
+  };
+
+  const [meterId, setMeterId] = useState("");
 
   const descriptionA = {
     power_energy_ratio:
@@ -38,7 +40,7 @@ function SizingParamsSharedMeter({ meterList, selected, setFormData }) {
     soc_max: "Maximum state-of-charge of the battery to be installed, in %.",
     eff_bc: "Charging efficiency of the battery to be installed, in %.",
     eff_bd: "Discharging efficiency of the battery to be installed, in %.",
-    deg_cost: "Degradation cost of the battery to be installed, in %.",
+    deg_cost: "Degradation cost of the battery to be installed, in €/kWh.",
   };
 
   const descriptionB = {
@@ -49,15 +51,18 @@ function SizingParamsSharedMeter({ meterList, selected, setFormData }) {
 
   const [error, setError] = useState(false);
   const [ownerships, setOwnerships] = useState(
-    selected.map((v) => ({ meter_id: v, percentage: 0 }))
+    selected.map((v) => ({
+      shared_meter_id: meterId,
+      meter_id: v,
+      percentage: 0,
+    }))
   );
 
   useEffect(
     () =>
       setFormData((prev) => ({
         ...prev,
-        sizing_params_for_shared_meter: meter,
-        ownerships: ownerships,
+        sizing_params_for_shared_meter: [meter],
       })),
     []
   );
@@ -66,10 +71,11 @@ function SizingParamsSharedMeter({ meterList, selected, setFormData }) {
     if (ownerships.length < selected.length) {
       setOwnerships((prev) => {
         return prev.concat({
+          shared_meter_id: meterId,
           meter_id: selected.filter(
             (m) => !prev.map((v) => v.meter_id).includes(m)
           )[0],
-          percentage: 0,
+          percentage: 10,
         });
       });
     } else if (ownerships.length > selected.length) {
@@ -90,12 +96,20 @@ function SizingParamsSharedMeter({ meterList, selected, setFormData }) {
       setOwnerships((prev) => {
         const nOwnerships = [...prev];
         nOwnerships[index] = {
+          shared_meter_id: prev[index].shared_meter_id,
           meter_id: meter_id,
           percentage: value,
         };
+        console.log(nOwnerships);
         return nOwnerships;
       });
       setError(false);
+      let ownerships_cp = [...ownerships];
+      ownerships_cp[index] = { ...ownerships[index], percentage: value };
+      setFormData((prev) => ({
+        ...prev,
+        ownerships: ownerships_cp,
+      }));
     } else {
       setError(true);
     }
@@ -105,23 +119,28 @@ function SizingParamsSharedMeter({ meterList, selected, setFormData }) {
     <>
       <Stack gap={7}>
         <div>
-          <Select
+          <TextInput
             id={"meter_id" + "spsm"}
             key={"meter_id" + "spsm"}
+            placeholder="Shared Meter Id"
             labelText={
-              "The string that unequivocally identifies the meter ID of the REC."
+              "The string that unequivocally identifies the shared meter."
             }
-            onChange={(e) =>
-              setMeter((prev) => ({
+            onChange={(e) => {
+              setFormData((prev) => ({
                 ...prev,
-                ["meter_id"]: e.target.value,
-              }))
-            }
-          >
-            {meterList.map((m) => (
-              <SelectItem value={m} text={m} key={m + "si"} />
-            ))}
-          </Select>
+                sizing_params_for_shared_meter: [{
+                  ...prev.sizing_params_for_shared_meter[0],
+                  meter_id: e.target.value,
+                }],
+                shared_meter_ids : [e.target.value]
+              }));
+              setMeterId(e.target.value);
+              setOwnerships((prev) =>
+                prev.map((v) => ({ ...v, shared_meter_id: e.target.value }))
+              );
+            }}
+          ></TextInput>
         </div>
         <div>
           <p className="bold margin-bot-0-8rem">Storage</p>
@@ -138,9 +157,12 @@ function SizingParamsSharedMeter({ meterList, selected, setFormData }) {
                     min={0}
                     value={value}
                     onChange={(_, state) =>
-                      setMeter((prev) => ({
+                      setFormData((prev) => ({
                         ...prev,
-                        [key]: state.value,
+                        sizing_params_for_shared_meter: [{
+                          ...prev.sizing_params_for_shared_meter[0],
+                          [key]: state.value,
+                        }],
                       }))
                     }
                   />
@@ -149,7 +171,7 @@ function SizingParamsSharedMeter({ meterList, selected, setFormData }) {
           </div>
         </div>
         <div>
-          <p className="bold margin-bot-0-8rem">Battery</p>
+          <p className="bold margin-bot-0-8rem">PV</p>
           <div className={styles.sizingParamsWrapper}>
             <div className={styles.sizingParams} key={"spsm"}>
               {Object.entries(meter)
@@ -162,10 +184,14 @@ function SizingParamsSharedMeter({ meterList, selected, setFormData }) {
                     className={styles.numberInput}
                     min={0}
                     value={value}
+                    onSubmit={() => console.log("it works")}
                     onChange={(_, state) =>
-                      setMeter((prev) => ({
+                      setFormData((prev) => ({
                         ...prev,
-                        [key]: state.value,
+                        sizing_params_for_shared_meter: [{
+                          ...prev.sizing_params_for_shared_meter[0],
+                          [key]: state.value,
+                        }],
                       }))
                     }
                   />
