@@ -1,3 +1,24 @@
+![alt text](figures/logo_Enershare.png)
+
+Welcome to INESC TEC Renewable Energy Community (REC) Sizing and Operation Guided User Interface (GUI).
+
+This GUI is intended for end-users who wish to interact with the 
+**REC Sizing REST API** (https://github.com/INESCTEC/rec-sizing-rest-api) and the 
+**REC Operation REST API** (https://github.com/INESCTEC/rec-operation-rest-api) 
+in a more intuitive and ready-to-use platform. 
+This development was made under the *Enershare* project.
+
+
+> **_NOTE:_** The deployment of this GUI requires the deployment of the REC Sizing 
+> and REC Operation REST APIs on the same server. In order to do so, please address 
+> the instructions provided on the respective GitHub repositories of both APIs.
+
+
+## Developers // Contacts:
+
+* Adriano Novo Maior (adriano.n.maior@inesctec.pt)
+* Ricardo Silva (ricardo.emanuel@inesctec.pt)
+
 ## Run Development server
 Run `npm install` to install modules
 
