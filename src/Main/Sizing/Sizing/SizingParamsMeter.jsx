@@ -56,8 +56,8 @@ function SizingParamsMeter({ id, addMeter }) {
                 .map(([key, value]) => (
                   <NumberInput
                     label={descriptionA[key]}
-                    id={key + meter.id + "s"}
-                    key={key + meter.id + "s"}
+                    id={key + id + "s"}
+                    key={key + id + "s"}
                     className={styles.numberInput}
                     min={0}
                     value={value}
@@ -81,8 +81,8 @@ function SizingParamsMeter({ id, addMeter }) {
                 .map(([key, value]) => (
                   <NumberInput
                     label={descriptionB[key]}
-                    id={key + meter.id + "s"}
-                    key={key + meter.id + "s"}
+                    id={key + id + "s"}
+                    key={key + id + "s"}
                     className={styles.numberInput}
                     min={0}
                     value={value}

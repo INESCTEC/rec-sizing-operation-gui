@@ -7,15 +7,29 @@ import {
   TableBody,
   TableCell,
   Popover,
-  PopoverContent
+  PopoverContent,
+  Pagination
 } from "@carbon/react";
 
 import { InformationFilled } from "@carbon/icons-react";
-import React from "react";
+import React, { useState } from "react";
 
 import styles from "./TableWrapper.module.css";
 
 function TableWrapper({ title, items, headers, description }) {
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(8);
+
+  const changePage = (pageInfo) => {
+    if (page != pageInfo.page){
+      setPage(pageInfo.page);
+    }
+
+    if (pageSize != pageInfo.pageSize){
+      setPageSize(pageInfo.pageSize);
+    }
+  }
+  
   return (
     <>
       <div className={styles.tableWrapper}>
@@ -40,7 +54,7 @@ function TableWrapper({ title, items, headers, description }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
+                {rows.slice((page-1)*pageSize).slice(0,pageSize).map((row) => (
                   <TableRow key={row.id}>
                     {row.cells.map((cell) => (
                       <TableCell key={cell.id}>{cell.value}</TableCell>
@@ -51,6 +65,7 @@ function TableWrapper({ title, items, headers, description }) {
             </Table>
           )}
         </DataTable>
+        <Pagination onChange={changePage} page={page} pageSize={pageSize} pageSizes={[8,16,24]} totalItems={items.length}></Pagination>
       </div>
     </>
   );

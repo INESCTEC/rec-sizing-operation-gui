@@ -6,15 +6,15 @@ import { MeterContext } from "../Interface";
 export default function MeterInput() {
   const { meters, setMeters, allMeters } = useContext(MeterContext);
   let updateSelected = (meter, checked) => {
-    console.log("State: " + meter + " " + checked);
+    //console.log"State: " + meter + " " + checked);
     setMeters((prev) => {
       let newArr = prev;
       if (checked && !meters.includes(meter)) {
         newArr = prev.concat(meter);
-        console.log("Adding " + meter);
+        //console.log"Adding " + meter);
       } else if (!checked && meters.includes(meter)) {
         newArr = prev.filter((value) => meter !== value);
-        console.log("Removing " + meter);
+        //console.log"Removing " + meter);
       }
       return newArr;
     });

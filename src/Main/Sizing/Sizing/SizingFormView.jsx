@@ -17,7 +17,7 @@ import { MeterContext } from "../../Interface";
 
 function SizingFormView({ onSubmit, setFormData }) {
   const { meters, allMeters } = useContext(MeterContext);
-  const [numDays, setNumDays] = useState(1);
+  const [numDays, setNumDays] = useState(0);
   const setDates = (dates) => {
     if (dates.length > 1) {
       setFormData((prevFormData) => ({
@@ -157,9 +157,9 @@ function SizingFormView({ onSubmit, setFormData }) {
                   <span>
                     <NumberInput
                       label="Number of Representative Days"
-                      placeholder="1"
+                      placeholder="0"
                       id="number-input"
-                      min={1}
+                      min={0}
                       value={numDays}
                       max={numDays}
                       onChange={(_, state) => setDay(state.value)}
@@ -179,76 +179,79 @@ function SizingFormView({ onSubmit, setFormData }) {
           </div>
 
           <MeterInput></MeterInput>
-          <div className="card-wrapper">
-            <div className="card-header">
-              <p>Meters Parameters</p>
+          {meters.length > 0 ? (
+            <div className="card-wrapper">
+              <div className="card-header">
+                <p>Meters Parameters</p>
+              </div>
+              <div className="card-body">
+                <SizingParamsMeterList setMeterParams={setMeterParams} />
+              </div>
             </div>
-            <div className="card-body">
-              <SizingParamsMeterList setMeterParams={setMeterParams} />
-            </div>
-          </div>
+          ) : undefined}
           {Object.keys(sharedMeters).length > 0 ? (
-                <div className="card-wrapper">
-                  <div className="card-header"><p>Shared Meters</p></div>
-                  <div className="card-body">
-                    <Accordion>
-                      {Object.keys(sharedMeters).map((currSerial) => (
-                        <AccordionItem
-                          key={currSerial + "accordion"}
-                          title={"Shared Meter"}
-                          open={true}
-                        >
-                          <SizingParamsSharedMeter
-                            updateSharedMeter={updateSharedMeter}
-                            updateOwnerships={updateOwnerships}
-                            removeSharedMeter={removeSharedMeter}
-                            serialNumber={currSerial}
-                            meterParams={
-                              sharedMeters[currSerial]
-                                .sizing_params_by_shared_meter
-                            }
-                            selected={meters}
-                          />
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                  </div>
-                </div>
-              ) : undefined}
+            <div className="card-wrapper">
+              <div className="card-header">
+                <p>Shared Meters</p>
+              </div>
+              <div className="card-body">
+                <Accordion>
+                  {Object.keys(sharedMeters).map((currSerial) => (
+                    <AccordionItem
+                      key={currSerial + "accordion"}
+                      title={"Shared Meter"}
+                      open={true}
+                    >
+                      <SizingParamsSharedMeter
+                        updateSharedMeter={updateSharedMeter}
+                        updateOwnerships={updateOwnerships}
+                        removeSharedMeter={removeSharedMeter}
+                        serialNumber={currSerial}
+                        meterParams={
+                          sharedMeters[currSerial].sizing_params_by_shared_meter
+                        }
+                        selected={meters}
+                      />
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            </div>
+          ) : undefined}
           <div className="row flex-space-between">
-          <Button
-                className="primary-button mt-1"
-                style={{
-                  justifyContent: "center",
-                  maxInlineSize: "100%",
-                }}
-                onClick={() => {
-                  addSharedMeter(serialNumber, {
-                    sizing_params_by_shared_meter: {
-                      meter_id: serialNumber,
-                      power_energy_ratio: 1,
-                      l_bic: 10,
-                      minimum_new_pv_power: 0,
-                      maximum_new_pv_power: 10,
-                      minimum_new_storage_capacity: 0,
-                      maximum_new_storage_capacity: 10,
-                      l_gic: 10,
-                      soc_min: 10,
-                      soc_max: 10,
-                      eff_bc: 10,
-                      eff_bd: 10,
-                      deg_cost: 10,
-                    },
-                    ownerships: meters.map((v) => ({
-                      meter_id: v,
-                      percentage: 0,
-                    })),
-                  });
-                  setSerialNumber((prev) => prev + 1);
-                }}
-              >
-                Add Shared Meter
-              </Button>
+            <Button
+              className="primary-button mt-1"
+              style={{
+                justifyContent: "center",
+                maxInlineSize: "100%",
+              }}
+              onClick={() => {
+                addSharedMeter(serialNumber, {
+                  sizing_params_by_shared_meter: {
+                    meter_id: serialNumber,
+                    power_energy_ratio: 1,
+                    l_bic: 10,
+                    minimum_new_pv_power: 0,
+                    maximum_new_pv_power: 10,
+                    minimum_new_storage_capacity: 0,
+                    maximum_new_storage_capacity: 10,
+                    l_gic: 10,
+                    soc_min: 10,
+                    soc_max: 10,
+                    eff_bc: 10,
+                    eff_bd: 10,
+                    deg_cost: 10,
+                  },
+                  ownerships: meters.map((v) => ({
+                    meter_id: v,
+                    percentage: 0,
+                  })),
+                });
+                setSerialNumber((prev) => prev + 1);
+              }}
+            >
+              Add Shared Meter
+            </Button>
             <Button className="primary-button mt-1" type="submit">
               Submit
             </Button>

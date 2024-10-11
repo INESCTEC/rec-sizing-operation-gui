@@ -82,16 +82,16 @@ function getData(setFetchData, formData) {
         error
           .json()
           .then((jsonError) => {
-            console.log("Json error from API");
-            console.log(jsonError.detail);
+            //console.log"Json error from API");
+            //console.logjsonError.detail);
           })
           .catch((_) => {
-            console.log("Generic error from API");
-            console.log(error.statusText);
+            //console.log"Generic error from API");
+            //console.logerror.statusText);
           });
       } else {
-        console.log("Fetch error");
-        console.log(error);
+        //console.log"Fetch error");
+        //console.logerror);
       }
     });
 

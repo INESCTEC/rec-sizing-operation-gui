@@ -99,17 +99,17 @@ function getOrder(
           error
             .json()
             .then((jsonError) => {
-              console.log("Json error from API");
-              console.log(jsonError.detail);
+              //console.log"Json error from API");
+              //console.logjsonError.detail);
               notification.setNotification(error.detail.message);
             })
             .catch((_) => {
-              console.log("Generic error from API");
-              console.log(error.statusText);
+              //console.log"Generic error from API");
+              //console.logerror.statusText);
             });
         } else {
-          console.log("Fetch error");
-          console.log(error);
+          //console.log"Fetch error");
+          //console.logerror);
         }
       });
 
@@ -146,8 +146,8 @@ function getOrderData(orderId, lemOrganization, setFetchData, notification) {
           error
             .json()
             .then((jsonError) => {
-              console.log("Json error from API");
-              console.log(jsonError);
+              //console.log"Json error from API");
+              //console.logjsonError);
               notification.setNotification(jsonError.message);
               if (error.status > 200 && error.status < 300) {
                 return new Promise(() => {
@@ -165,13 +165,13 @@ function getOrderData(orderId, lemOrganization, setFetchData, notification) {
               }
             })
             .catch((_) => {
-              console.log("Generic error from API");
-              console.log(error.statusText);
+              //console.log"Generic error from API");
+              //console.logerror.statusText);
               notification.setNotification(error.statusText);
             });
         } else {
-          console.log("Fetch error");
-          console.log(error);
+          //console.log"Fetch error");
+          //console.logerror);
         }
       });
   }

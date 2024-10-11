@@ -12,11 +12,10 @@ function NavBar({ selected, setSelected }) {
   const location = useLocation();
 
   useEffect(() => {
-    console.log(location.pathname.split("/"));
     setSelected(location.pathname.split("/")[1]);
   }, [location.pathname]);
 
-  const buttons = [
+  const buttons = [/*
     {
       text: "About",
       link: "about",
@@ -32,7 +31,7 @@ function NavBar({ selected, setSelected }) {
     {
       text: "Contact us",
       link: "contactus",
-    },
+    },*/
   ];
   return (
     <>

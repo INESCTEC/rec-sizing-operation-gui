@@ -11,6 +11,11 @@ export default function BarChart({ xAxis, data, chartId }) {
       emphasis: {
         focus: "series",
       },
+      tooltip: {
+        valueFormatter: function (value) {
+          return value + " €";
+        },
+      },
       data: data[value],
     });
   }
@@ -45,9 +50,21 @@ export default function BarChart({ xAxis, data, chartId }) {
     ],
     yAxis: [
       {
+        name: "Cost (€)",
+        nameLocation: "center",
+        nameTextStyle: {
+          /**
+           * the top padding will shift the name down so that it does not overlap with the axis-labels
+           * t-l-b-r
+           */
+          padding: [0, 0, 20, 0],
+        },
         type: "value",
-      },
-    ],
+        axisLabel: {
+          formatter: "{value} €",
+          hideOverlap: true,
+        },
+      }],
     series: series,
   };
   return <Chart chartOption={option} chartId={chartId}></Chart>;

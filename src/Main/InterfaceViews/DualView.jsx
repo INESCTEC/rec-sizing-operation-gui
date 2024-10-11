@@ -78,19 +78,19 @@ function getOrder(setOrderId, setMeterId, formData, notification) {
           error
             .json()
             .then((jsonError) => {
-              console.log("Json error from API");
-              console.log(jsonError.detail);
+              //console.log"Json error from API");
+              //console.logjsonError.detail);
               notification.setNotification(jsonError.detail.message);
             })
             .catch((_) => {
-              console.log("Generic error from API");
+              //console.log"Generic error from API");
               notification.setNotification(error.statusText);
 
-              console.log(error.statusText);
+              //console.logerror.statusText);
             });
         } else {
-          console.log("Fetch error");
-          console.log(error);
+          //console.log"Fetch error");
+          //console.logerror);
         }
       });
 
@@ -123,8 +123,8 @@ function getOrderData(orderId, setFetchData, notification) {
           error
             .json()
             .then((jsonError) => {
-              console.log("Json error from API");
-              console.log(jsonError.message);
+              //console.log"Json error from API");
+              //console.logjsonError.message);
               notification.setNotification(jsonError.message);
               if (error.status > 200 && error.status < 300)
                 return new Promise(() => {
@@ -132,13 +132,13 @@ function getOrderData(orderId, setFetchData, notification) {
                 });
             })
             .catch((_) => {
-              console.log("Generic error from API");
+              //console.log"Generic error from API");
               notification.setNotification(error.statusText);
-              console.log(error.statusText);
+              //console.logerror.statusText);
             });
         } else {
-          console.log("Fetch error");
-          console.log(error);
+          //console.log"Fetch error");
+          //console.logerror);
         }
       });
   }

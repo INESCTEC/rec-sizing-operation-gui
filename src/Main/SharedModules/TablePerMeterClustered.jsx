@@ -5,10 +5,10 @@ export default function TablePerMeter({ data }) {
 
   let header_keys = Object.keys(Object.entries(data)[0][1]);
 
-  if (header_keys.includes("datetime")) {
+  if (header_keys.includes("time")) {
     headers.push({
-      key: "datetime",
-      header: "Date Time",
+      key: "time",
+      header: "Time",
     });
   }
   headers.push({
@@ -99,7 +99,6 @@ export default function TablePerMeter({ data }) {
     items.push({ ...value, id: value.meter_id + obj });
   }
 
-  //console.logitems);
 
   const description = (
     <div style={{ color: "GrayText" }}>

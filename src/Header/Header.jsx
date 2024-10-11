@@ -10,7 +10,7 @@ function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
-  const buttons = [
+  const buttons = [/*
     {
       text: "About",
       link: "about",
@@ -26,7 +26,7 @@ function Header() {
     {
       text: "Contact us",
       link: "contactus",
-    },
+    },*/
   ];
 
   const locs = ["/login", "/sign-up", "/recover-password"];

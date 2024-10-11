@@ -5,7 +5,7 @@ import { Button } from "@carbon/react";
 
 function Profile() {
   const auth = useAuth();
-  console.log(auth);
+  //console.logauth);
   return (
     <>
       <div className="row flex-just-center">

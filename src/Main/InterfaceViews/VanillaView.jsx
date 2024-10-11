@@ -74,17 +74,17 @@ function getOrder(setOrderId, pricing_mechanism, formData, notification) {
           error
             .json()
             .then((jsonError) => {
-              console.log("Json error from API");
+              //console.log"Json error from API");
               notification.setNotification(jsonError.detail[0].msg);
-              console.log(jsonError.detail);
+              //console.logjsonError.detail);
             })
             .catch((_) => {
-              console.log("Generic error from API");
-              console.log(error.statusText);
+              //console.log"Generic error from API");
+              //console.logerror.statusText);
             });
         } else {
-          console.log("Fetch error");
-          console.log(error);
+          //console.log"Fetch error");
+          //console.logerror);
         }
       });
   } else {
@@ -111,8 +111,8 @@ function getOrderData(orderId, setFetchData, notification) {
           error
             .json()
             .then((jsonError) => {
-              console.log("Json error from API");
-              console.log(jsonError);
+              //console.log"Json error from API");
+              //console.logjsonError);
               notification.setNotification(jsonError.message);
               if (error.status > 200 && error.status < 300)
                 return new Promise(() => {
@@ -123,13 +123,13 @@ function getOrderData(orderId, setFetchData, notification) {
                 });
             })
             .catch((_) => {
-              console.log("Generic error from API");
-              console.log(error.statusText);
+              //console.log"Generic error from API");
+              //console.logerror.statusText);
               notification.setNotification(error.statusText);
             });
         } else {
-          console.log("Fetch error");
-          console.log(error);
+          //console.log"Fetch error");
+          //console.logerror);
           notification.setNotification("Failed to fetch.");
         }
       });

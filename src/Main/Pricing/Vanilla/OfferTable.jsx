@@ -41,7 +41,7 @@ function OfferTable({ offers }) {
   }));
 
 
-  console.log(items);
+  //console.logitems);
   return (
     <>
       <div className={styles.tableContainer}>

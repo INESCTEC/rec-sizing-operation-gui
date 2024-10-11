@@ -23,7 +23,8 @@ function ChartPerMeter({
   const energy_supplied_l = [];
   const net_load_l = [];
   const tableData = {};
-  
+  let option_data = [];
+
   for (let key in meter_inputs) {
     const {
       meter_id,
@@ -41,7 +42,9 @@ function ChartPerMeter({
       tableData[datetime] = {
         meter_id: meter_id_in,
         datetime: new Date(datetime).toLocaleTimeString([], {
-          year: 'numeric', month: 'numeric', day: 'numeric',
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
           hour: "2-digit",
           minute: "2-digit",
         }),
@@ -56,7 +59,7 @@ function ChartPerMeter({
   for (let key in lem_prices) {
     const { datetime, value } = lem_prices[key];
     prices.push([datetime, value]);
-    tableData[datetime]["shadow_price"] = value;
+    tableData[datetime]["transactions_price"] = value;
   }
 
   for (let key in meter_outputs) {
@@ -83,131 +86,181 @@ function ChartPerMeter({
   }
 
   for (let key in lem_transactions) {
-    const { meter_id, datetime, sold_position } =
-      lem_transactions[key];
+    const { meter_id, datetime, sold_position } = lem_transactions[key];
     if (meter_id === meter_id_in) {
-      sold_position_l.push([datetime, sold_position ]);
-      tableData[datetime]["sold_position"] =
-        sold_position;
+      sold_position_l.push([datetime, sold_position]);
+      tableData[datetime]["sold_position"] = sold_position;
     }
   }
 
-  series.push({
-    name: "Buy Price",
-    type: "line",
-    symbol: "line",
-    symbolSize: 0,
-    yAxisIndex: 1,
-    data: buy,
-    tooltip: {
-      valueFormatter: function (value) {
-        return value + " €/KWh";
+  if (buy.length > 0) {
+    series.push({
+      name: "Buy Price",
+      type: "line",
+      symbol: "line",
+      symbolSize: 0,
+      yAxisIndex: 1,
+      data: buy,
+      tooltip: {
+        valueFormatter: function (value) {
+          return value + " €/KWh";
+        },
       },
-    },
-  });
-  series.push({
-    name: "Sell Price",
-    type: "line",
-    symbol: "line",
-    symbolSize: 0,
-    yAxisIndex: 1,
-    data: sell,
-    tooltip: {
-      valueFormatter: function (value) {
-        return value + " €/KWh";
+    });
+    option_data.push({
+      name: "Buy Price",
+    });
+  }
+
+  if (sell.length > 0) {
+    series.push({
+      name: "Sell Price",
+      type: "line",
+      symbol: "line",
+      symbolSize: 0,
+      yAxisIndex: 1,
+      data: sell,
+      tooltip: {
+        valueFormatter: function (value) {
+          return value + " €/KWh";
+        },
       },
-    },
-  });
-  series.push({
-    name: "Transactions Price",
-    type: "line",
-    symbol: "line",
-    symbolSize: 0,
-    data: prices,
-    yAxisIndex: 1,
-    lineStyle: {
-      width: 4,
-      type: "dashed",
-    },
-    tooltip: {
-      valueFormatter: function (value) {
-        return value + " €/KWh";
+    });
+    option_data.push({
+      name: "Sell Price",
+    });
+  }
+
+  if (prices.length > 0) {
+    series.push({
+      name: "Transactions Price",
+      type: "line",
+      symbol: "line",
+      symbolSize: 0,
+      data: prices,
+      yAxisIndex: 1,
+      lineStyle: {
+        width: 4,
+        type: "dashed",
       },
-    },
-  });
-  series.push({
-    name: "Battery",
-    type: "line",
-    symbol: "line",
-    symbolSize: 0,
-    yAxisIndex: 0,
-    data: battery_l,
-    tooltip: {
-      valueFormatter: function (value) {
-        return value + " KWh";
+      tooltip: {
+        valueFormatter: function (value) {
+          return value + " €/KWh";
+        },
       },
-    },
-  });
-  series.push({
-    name: "Supplied",
-    type: "line",
-    yAxisIndex: 0,
-    data: energy_supplied_l,
-    tooltip: {
-      valueFormatter: function (value) {
-        return value + " KWh";
+    });
+    option_data.push({
+      name: "Transactions Price",
+    });
+  }
+
+  if (battery_l.length > 0) {
+    series.push({
+      name: "Battery",
+      type: "line",
+      symbol: "line",
+      symbolSize: 0,
+      yAxisIndex: 0,
+      data: battery_l,
+      tooltip: {
+        valueFormatter: function (value) {
+          return value + " KWh";
+        },
       },
-    },
-  });
-  series.push({
-    name: "Surplus",
-    type: "line",
-    yAxisIndex: 0,
-    data: energy_surplus_l,
-    tooltip: {
-      valueFormatter: function (value) {
-        return value + " KWh";
+    });
+    option_data.push({
+      name: "Battery",
+    });
+  }
+
+  if (energy_supplied_l.length > 0) {
+    series.push({
+      name: "Supplied",
+      type: "line",
+      yAxisIndex: 0,
+      data: energy_supplied_l,
+      tooltip: {
+        valueFormatter: function (value) {
+          return value + " KWh";
+        },
       },
-    },
-  });
-  series.push({
-    name: "Load",
-    type: "scatter",
-    symbol: "triangle",
-    symbolSize: 14,
-    yAxisIndex: 0,
-    data: load_l,
-    tooltip: {
-      valueFormatter: function (value) {
-        return value + " KWh";
+    });
+    option_data.push({
+      name: "Supplied",
+    });
+  }
+  if (energy_surplus_l.length > 0) {
+    series.push({
+      name: "Surplus",
+      type: "line",
+      yAxisIndex: 0,
+      data: energy_surplus_l,
+      tooltip: {
+        valueFormatter: function (value) {
+          return value + " KWh";
+        },
       },
-    },
-  });
-  series.push({
-    name: "Generation",
-    type: "bar",
-    yAxisIndex: 0,
-    data: pv_l,
-    tooltip: {
-      valueFormatter: function (value) {
-        return value + " KWh";
+    });
+    option_data.push({
+      name: "Surplus",
+    });
+  }
+
+  if (load_l.length > 0) {
+    series.push({
+      name: "Load",
+      type: "scatter",
+      symbol: "triangle",
+      symbolSize: 14,
+      yAxisIndex: 0,
+      data: load_l,
+      tooltip: {
+        valueFormatter: function (value) {
+          return value + " KWh";
+        },
       },
-    },
-  });
-  series.push({
-    name: "Sold Position",
-    type: "line",
-    symbol: "circle",
-    symbolSize: 14,
-    yAxisIndex: 0,
-    data: sold_position_l,
-    tooltip: {
-      valueFormatter: function (value) {
-        return value + " KWh";
+    });
+    option_data.push({
+      name: "Load",
+    });
+  }
+
+  if (pv_l.length > 0) {
+    series.push({
+      name: "Generation",
+      type: "bar",
+      yAxisIndex: 0,
+      data: pv_l,
+      tooltip: {
+        valueFormatter: function (value) {
+          return value + " KWh";
+        },
       },
-    },
-  });
-/*
+    });
+    option_data.push({
+      name: "Generation",
+    });
+  }
+
+  if (sold_position_l.length > 0) {
+    series.push({
+      name: "Sold Position",
+      type: "line",
+      symbol: "circle",
+      symbolSize: 14,
+      yAxisIndex: 0,
+      data: sold_position_l,
+      tooltip: {
+        valueFormatter: function (value) {
+          return value + " KWh";
+        },
+      },
+    });
+    option_data.push({
+      name: "Sold Position",
+    });
+  }
+  /*
   series.push({
     name: "net_load",
     type: "line",
@@ -222,6 +275,7 @@ function ChartPerMeter({
     },
   });*/
 
+  let end = (Object.keys(tableData).length / 96) * 100;
   const energ_expend_option = {
     title: {
       text: title,
@@ -236,37 +290,7 @@ function ChartPerMeter({
       height: "70px",
       right: "10%",
       top: "5%",
-      data: [
-        {
-          name: "Buy Price",
-        },
-        {
-          name: "Sell Price",
-        },
-        {
-          name: "Transactions Price",
-        },
-        {
-          name: "Load",
-        },
-        {
-          name: "Battery",
-        },
-        {
-          name: "Generation",
-        },        
-        {
-          name: "Supplied",
-        },
-        {
-          name: "Surplus",
-        },
-        {
-          name: "Sold Position",
-        },
-        /*
-        { name: "net_load" },*/
-      ],
+      data: option_data,
     },
     tooltip: {
       trigger: "axis",
@@ -313,13 +337,34 @@ function ChartPerMeter({
         },
       },
     ],
+    dataZoom: [
+      {
+        type: "slider",
+        show: true,
+        xAxisIndex: [0, 1],
+        start: 0,
+        end: end,
+      },
+      {
+        type: "inside",
+        xAxisIndex: [0, 1],
+        start: 0,
+        end: end,
+      },
+    ],
     series: series,
   };
 
   return (
-    <div className={styles.chartContainer}>
-      <Chart chartOption={energ_expend_option} chartId={chartId} />
-      <TablePerMeter data={tableData}></TablePerMeter>
+    <div className="card-wrapper">
+      <div className="card-header"></div>
+      <div className="card-body">
+        <div className={styles.chartContainer}>
+          <Chart chartOption={energ_expend_option} chartId={chartId} />
+          <div style={{ marginBottom: "25px" }}></div>
+          <TablePerMeter data={tableData}></TablePerMeter>
+        </div>
+      </div>
     </div>
   );
 }

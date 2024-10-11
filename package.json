@@ -1,17 +1,18 @@
 {
-  "name": "react-app",
+  "name": "enershare-app",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --base=/enershare/",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "@carbon/icons-react": "^11.42.0",
     "@carbon/react": "^1.63.2",
+    "@ibm/plex": "^6.4.1",
     "echarts": "^5.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

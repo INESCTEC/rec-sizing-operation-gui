@@ -24,7 +24,7 @@ const AuthProvider = ({ children }) => {
 
       const res = await response.json();
 
-      console.log(res)
+      //console.logres)
       if (res) {
         setUser(res.email);
         setToken(res.accessToken);
@@ -36,7 +36,7 @@ const AuthProvider = ({ children }) => {
 
       throw new Error(res.message);
     } catch (err) {
-      console.log(err);
+      //console.logerr);
 
       // The following 5 lines should be removed for authentication to work
       setUser("email");
@@ -57,7 +57,7 @@ const AuthProvider = ({ children }) => {
         body: JSON.stringify(data),
       });
 
-      console.log(response);
+      //console.logresponse);
 
 
       const res = await response.json();

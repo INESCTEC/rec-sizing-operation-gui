@@ -70,7 +70,7 @@ function SizingParamsSharedMeter({
       .reduce((prev, next) => prev + next);
     totalOwner -= ownerships[index].percentage;
     totalOwner += value;
-    console.log(totalOwner);
+    //console.logtotalOwner);
     if (totalOwner <= 100) {
       setOwnerships((prev) => {
         const nOwnerships = [...prev];

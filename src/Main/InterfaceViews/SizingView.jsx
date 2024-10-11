@@ -38,12 +38,13 @@ function SizingView() {
   const { meters, dataset } = useContext(MeterContext);
   const [fetchData, setFetchData] = useState(null);
   const [orderId, setOrderId] = useState(null);
+  const [cluster, setCluster] = useState(false);
   const [meterId, setMeterId] = useState("default");
   const [formData, setFormData] = useState({
     start_datetime: null,
     end_datetime: null,
     dataset_origin: dataset,
-    nr_representative_days: 1,
+    nr_representative_days: 0,
     meter_ids: meters,
     sizing_params_by_meter: null,
   });
@@ -51,12 +52,12 @@ function SizingView() {
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      meter_ids: meters
+      meter_ids: meters,
     }));
   }, [meters]);
 
   useEffect(
-    () => getOrderData(orderId, setFetchData, notification),
+    () => getOrderData(orderId, cluster, setFetchData, notification),
     [orderId]
   );
   return fetchData ? (
@@ -65,11 +66,19 @@ function SizingView() {
       meterId={meterId}
       setMeterId={setMeterId}
       ids={formData.meter_ids}
+      clustered={cluster}
     />
   ) : (
     <SizingFormView
       onSubmit={(hasAssets) => {
-        getOrder(setOrderId, hasAssets, setMeterId, formData, notification);
+        getOrder(
+          setOrderId,
+          setCluster,
+          hasAssets,
+          setMeterId,
+          formData,
+          notification
+        );
       }}
       setFormData={setFormData}
       formData={formData}
@@ -77,11 +86,18 @@ function SizingView() {
   );
 }
 
-function getOrder(setOrderId, hasAssets, setMeterId, formData, notification) {
+function getOrder(
+  setOrderId,
+  setCluster,
+  hasAssets,
+  setMeterId,
+  formData,
+  notification
+) {
   const path = hasAssets
     ? "sizing_with_shared_assets"
     : "sizing_without_shared_assets";
-  console.log(formData);
+  //console.logformData);
   if (
     formData.start_datetime !== null &&
     formData.end_datetime !== null &&
@@ -102,6 +118,7 @@ function getOrder(setOrderId, hasAssets, setMeterId, formData, notification) {
       })
       .then((data) => {
         setOrderId(data.order_id);
+        setCluster(formData.nr_representative_days > 0);
         setMeterId(Array.from(formData.meter_ids)[0]);
       })
       .catch((error) => {
@@ -110,17 +127,17 @@ function getOrder(setOrderId, hasAssets, setMeterId, formData, notification) {
           error
             .json()
             .then((jsonError) => {
-              console.log("Json error from API");
-              console.log(jsonError.detail);
+              //console.log"Json error from API");
+              //console.logjsonError.detail);
               notification.setNotification(jsonError.detail.message);
             })
             .catch((_) => {
-              console.log("Generic error from API");
-              console.log(error.statusText);
+              //console.log"Generic error from API");
+              //console.logerror.statusText);
             });
         } else {
-          console.log("Fetch error");
-          console.log(error);
+          //console.log"Fetch error");
+          //console.logerror);
         }
       });
   } else {
@@ -130,9 +147,12 @@ function getOrder(setOrderId, hasAssets, setMeterId, formData, notification) {
   }
 }
 
-function getOrderData(orderId, setFetchData, notification) {
+function getOrderData(orderId, cluster, setFetchData, notification) {
   if (orderId !== null) {
-    fetch(API_URL["SIZING"] + `/get_sizing/${orderId}`)
+    let link = cluster
+      ? API_URL["SIZING"] + `/get_clustered_sizing/${orderId}`
+      : API_URL["SIZING"] + `/get_sizing/${orderId}`;
+    fetch(link)
       .then((res) => {
         if (res.status !== 200) {
           return Promise.reject(res);
@@ -153,30 +173,25 @@ function getOrderData(orderId, setFetchData, notification) {
           error
             .json()
             .then((jsonError) => {
-              console.log("Json error from API");
-              console.log(jsonError);
+              //console.log"Json error from API");
+              //console.logjsonError);
               notification.setNotification(jsonError.message);
               if (error.status > 200 && error.status < 300)
                 return new Promise(() => {
                   setTimeout(
-                    () =>
-                      getOrderData(
-                        orderId,
-                        setFetchData,
-                        notification
-                      ),
+                    () => getOrderData(orderId,cluster, setFetchData, notification),
                     5000
                   );
                 });
             })
             .catch((_) => {
-              console.log("Generic error from API");
-              console.log(error);
+              //console.log"Generic error from API");
+              //console.logerror);
               notification.setNotification(error.statusText);
             });
         } else {
-          console.log("Fetch error");
-          console.log(error);
+          //console.log"Fetch error");
+          //console.logerror);
         }
       });
   }

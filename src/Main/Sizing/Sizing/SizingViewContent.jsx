@@ -1,12 +1,13 @@
 import styles from "./SizingViewContent.module.css";
 import DownloadCSV from "../../../Data/DownloadCSV";
 
+import ChartPerMeterClustered from "../../SharedModules/ChartPerMeterClustered";
+
 import ChartPerMeter from "../../SharedModules/ChartPerMeter";
-import OperationKPI from "../../Pricing/OperationKPI";
 import { Select, SelectItem } from "@carbon/react";
 import BarChart from "../../../Data/BarChart";
 
-function SizingViewContent({ meterId, setMeterId, ids, data }) {
+function SizingViewContent({ meterId, setMeterId, ids, data, clustered }) {
   const meter_inputs = data["meter_operation_inputs"];
   const lem_prices = data["lem_prices"];
   const meter_outputs = data["meter_operation_outputs"];
@@ -40,7 +41,7 @@ function SizingViewContent({ meterId, setMeterId, ids, data }) {
     }
   }
 
-
+  //console.logdata);
   let sorted_mb_costs = member_costs.sort((v1, v2) =>
     v1.meter_id.localeCompare(v2.meter_id)
   );
@@ -75,19 +76,25 @@ function SizingViewContent({ meterId, setMeterId, ids, data }) {
           </Select>
         </div>
       </div>
-      <div className="card-wrapper">
-        <div className="card-header"></div>
-        <div className="card-body">
-          <ChartPerMeter
-            title="Operation Chart"
-            meter_id_in={meterId}
-            meter_inputs={meter_inputs}
-            meter_outputs={meter_outputs}
-            lem_prices={lem_prices}
-            lem_transactions={lem_transactions}
-          />
-        </div>
-      </div>
+      {clustered ? (
+        <ChartPerMeterClustered
+          title="Operation Chart"
+          meter_id_in={meterId}
+          meter_inputs={meter_inputs}
+          meter_outputs={meter_outputs}
+          lem_prices={lem_prices}
+          lem_transactions={lem_transactions}
+        />
+      ) : (
+        <ChartPerMeter
+          title="Operation Chart"
+          meter_id_in={meterId}
+          meter_inputs={meter_inputs}
+          meter_outputs={meter_outputs}
+          lem_prices={lem_prices}
+          lem_transactions={lem_transactions}
+        />
+      )}
 
       <div className="card-wrapper">
         <div className="card-header"></div>
