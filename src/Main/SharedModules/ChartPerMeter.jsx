@@ -59,7 +59,9 @@ function ChartPerMeter({
   for (let key in lem_prices) {
     const { datetime, value } = lem_prices[key];
     prices.push([datetime, value]);
-    tableData[datetime]["transactions_price"] = value;
+    if (tableData[datetime] === undefined)
+      tableData[datetime] = { transactions_price: value };
+    else tableData[datetime]["transactions_price"] = value;
   }
 
   for (let key in meter_outputs) {
@@ -78,7 +80,14 @@ function ChartPerMeter({
       energy_supplied_l.push([datetime, energy_supplied]);
       energy_surplus_l.push([datetime, energy_surplus]);
       net_load_l.push([datetime, net_load]);
-      tableData[datetime]["battery"] = bess_energy_content;
+      if (tableData[datetime] === undefined)
+        tableData[datetime] = {
+          battery: bess_energy_content,
+          supplied: energy_supplied,
+          surplus: energy_surplus,
+          net_load: net_load,
+        };
+      else tableData[datetime]["battery"] = bess_energy_content;
       tableData[datetime]["supplied"] = energy_supplied;
       tableData[datetime]["surplus"] = energy_surplus;
       tableData[datetime]["net_load"] = net_load;

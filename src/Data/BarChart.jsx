@@ -45,7 +45,7 @@ export default function BarChart({ xAxis, data, chartId }) {
       {
         type: "category",
         axisTick: { show: false },
-        data: xAxis,
+        data: [xAxis],
       },
     ],
     yAxis: [

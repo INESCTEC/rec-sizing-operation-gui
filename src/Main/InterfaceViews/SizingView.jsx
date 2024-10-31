@@ -35,7 +35,7 @@ function SizingViewTabbed() {
 
 function SizingView() {
   const notification = useNotification();
-  const { meters, dataset } = useContext(MeterContext);
+  const { meters, sharedMetersL, dataset } = useContext(MeterContext);
   const [fetchData, setFetchData] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [cluster, setCluster] = useState(false);
@@ -65,7 +65,7 @@ function SizingView() {
       data={fetchData}
       meterId={meterId}
       setMeterId={setMeterId}
-      ids={formData.meter_ids}
+      ids={formData.meter_ids.concat(sharedMetersL)}
       clustered={cluster}
     />
   ) : (

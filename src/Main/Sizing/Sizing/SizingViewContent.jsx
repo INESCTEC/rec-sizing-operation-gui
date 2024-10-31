@@ -29,28 +29,22 @@ function SizingViewContent({ meterId, setMeterId, ids, data, clustered }) {
     "sc_tariffs_costs",
   ];
 
-  let sorted_ids = ids.sort();
-  let sorted_inv_outputs = meter_investment_outputs.sort((v1, v2) =>
-    v1.meter_id.localeCompare(v2.meter_id)
-  );
-
   for (let keeper of keepers) {
     outputs_by_id[keeper] = [];
-    for (let value of sorted_inv_outputs) {
-      outputs_by_id[keeper].push(value[keeper]);
+    for (let value of meter_investment_outputs) {
+      if(value.meter_id === meterId)
+        outputs_by_id[keeper].push(value[keeper]);
     }
   }
 
-  //console.logdata);
-  let sorted_mb_costs = member_costs.sort((v1, v2) =>
-    v1.meter_id.localeCompare(v2.meter_id)
-  );
   for (let keeper of ["member_cost", "member_cost_compensation"]) {
     member_costs_by_id[keeper] = [];
-    for (let value of sorted_mb_costs) {
-      member_costs_by_id[keeper].push(value[keeper]);
+    for (let value of member_costs) {
+      if(value.meter_id === meterId)
+        member_costs_by_id[keeper].push(value[keeper]);
     }
   }
+
 
   return (
     <>
@@ -101,7 +95,7 @@ function SizingViewContent({ meterId, setMeterId, ids, data, clustered }) {
         <div className="card-body">
           <BarChart
             data={outputs_by_id}
-            xAxis={sorted_ids}
+            xAxis={meterId}
             chartId={"outptus"}
           ></BarChart>
         </div>
@@ -111,7 +105,7 @@ function SizingViewContent({ meterId, setMeterId, ids, data, clustered }) {
         <div className="card-body">
           <BarChart
             data={member_costs_by_id}
-            xAxis={sorted_ids}
+            xAxis={meterId}
             chartId={"random"}
           ></BarChart>
         </div>

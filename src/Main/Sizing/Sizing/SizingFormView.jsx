@@ -16,7 +16,7 @@ import MeterInput from "../../SharedModules/MeterInput";
 import { MeterContext } from "../../Interface";
 
 function SizingFormView({ onSubmit, setFormData }) {
-  const { meters, allMeters } = useContext(MeterContext);
+  const { meters, sharedMetersL, setSharedMetersL } = useContext(MeterContext);
   const [numDays, setNumDays] = useState(0);
   const setDates = (dates) => {
     if (dates.length > 1) {
@@ -71,7 +71,7 @@ function SizingFormView({ onSubmit, setFormData }) {
   const updateSharedMeter = (id, key, value) => {
     setSharedMeter((prev) => {
       let newSharedMeters = { ...prev };
-      newSharedMeters[id].sizing_params_by_shared_meter[key] = value;
+      newSharedMeters[id].sizing_params_for_shared_meter[key] = value;
       return newSharedMeters;
     });
   };
@@ -97,18 +97,18 @@ function SizingFormView({ onSubmit, setFormData }) {
     setFormData((prev) => ({
       ...prev,
       shared_meter_ids: Object.values(sharedMeters).map(
-        (obj) => obj.sizing_params_by_shared_meter.meter_id
+        (obj) => obj.sizing_params_for_shared_meter.meter_id
       ),
       ownerships: Object.values(sharedMeters)
         .map((obj) =>
           obj.ownerships.map((own) => ({
             ...own,
-            shared_meter_id: obj.sizing_params_by_shared_meter.meter_id,
+            shared_meter_id: obj.sizing_params_for_shared_meter.meter_id,
           }))
         )
         .flat(),
-      sizing_params_by_shared_meter: Object.values(sharedMeters).map(
-        (obj) => obj.sizing_params_by_shared_meter
+      sizing_params_for_shared_meter: Object.values(sharedMeters).map(
+        (obj) => obj.sizing_params_for_shared_meter
       ),
     }));
   };
@@ -121,6 +121,9 @@ function SizingFormView({ onSubmit, setFormData }) {
           onSubmit={(e) => {
             e.preventDefault();
             setSharedForm();
+            setSharedMetersL(Object.values(sharedMeters).map(
+              (obj) => obj.sizing_params_for_shared_meter.meter_id
+            ))
             onSubmit(Object.keys(sharedMeters).length > 0);
           }}
         >
@@ -208,7 +211,7 @@ function SizingFormView({ onSubmit, setFormData }) {
                         removeSharedMeter={removeSharedMeter}
                         serialNumber={currSerial}
                         meterParams={
-                          sharedMeters[currSerial].sizing_params_by_shared_meter
+                          sharedMeters[currSerial].sizing_params_for_shared_meter
                         }
                         selected={meters}
                       />
@@ -227,7 +230,7 @@ function SizingFormView({ onSubmit, setFormData }) {
               }}
               onClick={() => {
                 addSharedMeter(serialNumber, {
-                  sizing_params_by_shared_meter: {
+                  sizing_params_for_shared_meter: {
                     meter_id: serialNumber,
                     power_energy_ratio: 1,
                     l_bic: 10,

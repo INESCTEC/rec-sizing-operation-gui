@@ -396,10 +396,10 @@ function ChartPerMeterClustered({
     <div>
       {Object.keys(tableData).map((key) => {
         return (
-          <div className="card-wrapper">
+          <div className="card-wrapper" key={key} >
             <div className="card-header"><p>Cluster Number: {key}</p></div>
             <div className="card-body">
-              <div key={key} className={styles.chartContainer}>
+              <div className={styles.chartContainer}>
                 <Chart
                   chartOption={energ_expend_option[key]}
                   chartId={chartId + key}

@@ -133,7 +133,7 @@ const ALL_METERS = {
     "f3c07b9293f7",
     "f4a53aae164a",
     "f4f44dd669e8",
-    "fbe599917f4d",
+    "fbe599917f4d"
   ],
   CEVE: [
     "0cb815fd4dec",

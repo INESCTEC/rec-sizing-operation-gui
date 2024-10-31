@@ -15,13 +15,14 @@ export const MeterContext = createContext(null);
 function Interface() {
   const [meters, setMeters] = useState([]);
   const [allMeters, setAllMeters] = useState([]);
+  const [sharedMeters, setSharedMeters] = useState([]);
   const [dataset, setDataset] = useState(null);
 
   return (
     <>
       <LeftNavBar />
       <MeterContext.Provider
-        value={{ meters: meters, setMeters: setMeters, allMeters: allMeters, setAllMeters: setAllMeters, dataset: dataset, setDataset: setDataset }}
+        value={{ meters: meters, setMeters: setMeters, allMeters: allMeters, setAllMeters: setAllMeters, dataset: dataset, setDataset: setDataset , sharedMetersL: sharedMeters, setSharedMetersL: setSharedMeters}}
       >
         <div className={`interface-container`}>
           <Routes>
