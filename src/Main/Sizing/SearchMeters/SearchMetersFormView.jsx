@@ -47,7 +47,7 @@ function SearchMetersFormView({ onSubmit, setFormData }) {
                     text="Choose meter dataset"
                   />
                   <SelectItem key={"SEL"} value={"SEL"} text={"SEL"} />
-                  <SelectItem key={"CEVE"} value={"CEVE"} text={"CEVE"} />
+                  <SelectItem key={"INDATA"} value={"INDATA"} text={"INDATA"} />
                 </Select>
                 <NumberInput
                   id="Latitude"

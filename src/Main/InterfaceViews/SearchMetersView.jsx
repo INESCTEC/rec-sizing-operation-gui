@@ -135,7 +135,7 @@ const ALL_METERS = {
     "f4f44dd669e8",
     "fbe599917f4d"
   ],
-  CEVE: [
+  INDATA: [
     "0cb815fd4dec",
     "0cb815fd32d4",
     "0cb815fd4bcc",
