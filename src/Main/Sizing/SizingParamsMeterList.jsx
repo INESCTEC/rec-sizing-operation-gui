@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import SizingParamsMeter from "./SizingParamsMeter";
-import MeterInput from "../../SharedModules/MeterInput";
+import MeterInput from "../SharedModules/MeterInput";
 
-import { MeterContext } from "../../Interface";
+import { MeterContext } from "../Interface";
 import { Accordion, AccordionItem } from "@carbon/react";
 
 export default function SizingParamsMeterList({ setMeterParams }) {

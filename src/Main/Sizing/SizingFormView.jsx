@@ -8,15 +8,15 @@ import {
   Accordion,
   AccordionItem,
 } from "@carbon/react";
-import styles from "../../InterfaceContent.module.css";
+import styles from "../InterfaceContent.module.css";
 import SizingParamsMeterList from "./SizingParamsMeterList";
 import SizingParamsSharedMeter from "./SizingParamsSharedMeter";
 import { useState, useContext, useEffect } from "react";
-import MeterInput from "../../SharedModules/MeterInput";
-import { MeterContext } from "../../Interface";
+import MeterInput from "../SharedModules/MeterInput";
+import { MeterContext } from "../Interface";
 
 function SizingFormView({ onSubmit, setFormData }) {
-  const { meters, sharedMetersL, setSharedMetersL } = useContext(MeterContext);
+  const { meters, setSharedMetersL } = useContext(MeterContext);
   const [numDays, setNumDays] = useState(0);
   const setDates = (dates) => {
     if (dates.length > 1) {

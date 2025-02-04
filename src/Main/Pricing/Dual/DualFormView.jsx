@@ -90,7 +90,7 @@ function DualFormView({ setOrderId, setMeters }) {
               .catch((_) => {
                 //console.log"Generic error from API");
                 notification.setNotification(error.statusText);
-
+  
                 //console.logerror.statusText);
               });
           } else {

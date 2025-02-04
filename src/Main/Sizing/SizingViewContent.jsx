@@ -1,11 +1,11 @@
 import styles from "./SizingViewContent.module.css";
-import DownloadCSV from "../../../Data/DownloadCSV";
+import DownloadCSV from "../../Data/DownloadCSV";
 
-import ChartPerMeterClustered from "../../SharedModules/ChartPerMeterClustered";
+import ChartPerMeterClustered from "../SharedModules/ChartPerMeterClustered";
 
-import ChartPerMeter from "../../SharedModules/ChartPerMeter";
+import ChartPerMeter from "../SharedModules/ChartPerMeter";
 import { Select, SelectItem } from "@carbon/react";
-import BarChart from "../../../Data/BarChart";
+import BarChart from "../../Data/BarChart";
 
 function SizingViewContent({ meterId, setMeterId, ids, data, clustered }) {
   const meter_inputs = data["meter_operation_inputs"];
@@ -44,7 +44,7 @@ function SizingViewContent({ meterId, setMeterId, ids, data, clustered }) {
         member_costs_by_id[keeper].push(value[keeper]);
     }
   }
-
+  
 
   return (
     <>

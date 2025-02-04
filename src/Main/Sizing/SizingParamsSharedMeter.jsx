@@ -2,8 +2,6 @@ import {
   NumberInput,
   TextInput,
   Stack,
-  Select,
-  SelectItem,
   Button
 } from "@carbon/react";
 
