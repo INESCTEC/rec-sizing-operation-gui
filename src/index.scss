@@ -9,10 +9,11 @@ body {
 body {
   height: 100vh;
   margin: 0;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif !important;
+  font-family: 'Lato', 'Manrope',sans-serif !important;
   font-size: 14px;
-  background-image: linear-gradient(45deg, #9966ff 0%, #18e5b0 100%) !important;
-  background-attachment: fixed;
+  font-weight: 500;
+  //background-image: linear-gradient(45deg, #9966ff 0%, #3fdcb4 100%) !important;
+  //background-attachment: fixed;
 }
 
 
@@ -237,7 +238,7 @@ body {
 }
 
 .cds--tabs .cds--tabs__nav-item--selected {
-  border-block-end: 2px solid var(--cds-border-interactive, #18e5b0) !important;
+  border-block-end: 2px solid var(--cds-border-interactive, #3fdcb4) !important;
 }
 
 .margin-top-1rem {
@@ -329,7 +330,7 @@ body {
 }
 
 .notification button:focus {
-  outline: 2px solid #18e5b0 !important;
+  outline: 2px solid #3fdcb4 !important;
 }
 
 .notification button svg {
@@ -347,7 +348,6 @@ body {
 .login-page {
   display: flex;
   justify-content: center;
-  align-items: center;
   height: 100%;
   padding-bottom: 150px;
 }
@@ -385,5 +385,9 @@ body {
 }
 
 .cds--overflow-menu.cds--overflow-menu--open svg{
-  fill: #18e5b0 !important;
+  fill: #3fdcb4 !important;
+}
+
+.cds--overflow-menu:hover{
+  background: none;
 }

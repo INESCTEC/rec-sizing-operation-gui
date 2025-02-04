@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 
 const Login = () => {
   const [input, setInput] = useState({
-    email: "",
-    password: "",
+    email: "example@enershare.com",
+    password: "example",
   });
 
   const auth = useAuth();
@@ -47,6 +47,7 @@ const Login = () => {
                 type="email"
                 id="user-email"
                 name="email"
+                value={input.email}
                 placeholder="Email"
                 aria-describedby="user-email"
                 aria-invalid="false"
@@ -57,6 +58,7 @@ const Login = () => {
                 type="password"
                 placeholder="Password"
                 id="password"
+                value={input.password}
                 name="password"
                 aria-describedby="user-password"
                 aria-invalid="false"

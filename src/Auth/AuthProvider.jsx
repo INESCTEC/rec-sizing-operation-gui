@@ -30,7 +30,7 @@ const AuthProvider = ({ children }) => {
         setToken(res.accessToken);
         localStorage.setItem("user", res.email);
         localStorage.setItem("site", res.accessToken);
-        navigate("/dashboard");
+        navigate("/dashboard/meters");
         return;
       }
 
@@ -39,11 +39,11 @@ const AuthProvider = ({ children }) => {
       //console.logerr);
 
       // The following 5 lines should be removed for authentication to work
-      setUser("email");
+      setUser("example@enershare.com");
       setToken("token");
       localStorage.setItem("user", "email");
       localStorage.setItem("site", "token");
-      navigate("/dashboard");
+      navigate("/dashboard/meters");
     }
   };
 

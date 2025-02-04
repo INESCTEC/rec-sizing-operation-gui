@@ -47,7 +47,7 @@
 
 .button:focus-visible,
 .buttonSelected:focus-visible {
-  border-left: 1px solid #00e1a8;
+  border-left: 1px solid #3fdcb4;
   border-radius: 1pt;
   transition: 0.1s;
   outline: transparent;
@@ -61,9 +61,9 @@
 }
 
 .buttonSelected {
-  color: #00e1a8;
+  color: #3fdcb4;
   background-color: #6f3bd7;
-  border-left: 1px solid #00e1a8;
+  border-left: 1px solid #3fdcb4;
 }
 
 .buttonContent {
@@ -92,12 +92,12 @@
 }
 
 .link:hover {
-  color: #00e1a8;
+  color: #3fdcb4;
 }
 
 .buttonSelected .link {
   background-color: #6f3bd7;
-  color: #00e1a8;
+  color: #3fdcb4;
 }
 
 .hideButton {
@@ -146,10 +146,10 @@
   }
 
   .buttonSelected {
-    color: #00e1a8;
+    color: #3fdcb4;
     background-color: #6f3bd7;
     border-left: none;
-    border-bottom: 1px solid #00e1a8;
+    border-bottom: 1px solid #3fdcb4;
   }
 
   .hide{

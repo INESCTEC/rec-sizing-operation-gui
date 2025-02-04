@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
-import SearchMetersViewContent from "../Sizing/SearchMeters/SearchMetersViewContent";
-import SearchMetersFormView from "../Sizing/SearchMeters/SearchMetersFormView";
+import SearchMetersViewContent from "../SearchMeters/SearchMetersViewContent";
+import SearchMetersFormView from "../SearchMeters/SearchMetersFormView";
 import { MeterContext } from "../Interface";
 import { Tabs, Tab, TabList, TabPanel, TabPanels } from "@carbon/react";
 
@@ -10,14 +10,14 @@ import { API_URL } from "../Interface";
 function SearchMetersView() {
   return (
     <>
-      <div className="card-wrapper">
+      <div>
         <Tabs>
           <TabList aria-label="List of tabs">
             <Tab className={styles.tab}>Search Meters</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
-              <SearchMetersViewB />
+              <SearchMetersViewPanel />
             </TabPanel>
           </TabPanels>
         </Tabs>
@@ -26,7 +26,7 @@ function SearchMetersView() {
   );
 }
 
-function SearchMetersViewB() {
+function SearchMetersViewPanel() {
   const { setMeters, setAllMeters, setDataset } = useContext(MeterContext);
   const [fetchData, setFetchData] = useState(null);
   const [formData, setFormData] = useState({
@@ -82,19 +82,18 @@ function getData(setFetchData, formData) {
         error
           .json()
           .then((jsonError) => {
-            //console.log"Json error from API");
-            //console.logjsonError.detail);
+            //console.log("Json error from API");
+            //console.log(jsonError.detail);
           })
           .catch((_) => {
-            //console.log"Generic error from API");
-            //console.logerror.statusText);
+            //console.log("Generic error from API");
+            //console.log(error.statusText);
           });
       } else {
-        //console.log"Fetch error");
-        //console.logerror);
+        //console.log("Fetch error");
+        //console.log(error);
       }
     });
-
   document.body.style.cursor = "default";
 }
 
@@ -133,7 +132,7 @@ const ALL_METERS = {
     "f3c07b9293f7",
     "f4a53aae164a",
     "f4f44dd669e8",
-    "fbe599917f4d"
+    "fbe599917f4d",
   ],
   INDATA: [
     "0cb815fd4dec",

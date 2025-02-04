@@ -4,10 +4,11 @@ import SearchMetersView from "./InterfaceViews/SearchMetersView";
 import { createContext, useState } from "react";
 import PricingView from "./InterfaceViews/PricingView";
 import SizingViewTabbed from "./InterfaceViews/SizingView";
+import { Redirect } from "./Navigation/Redirect";
 
 export const API_URL = {
   PRICING : 'http://10.61.12.61:8000',
-  SIZING : 'http://localhost:8001'
+  SIZING : 'http://10.61.12.61:8001'
 }
 
 
@@ -31,24 +32,7 @@ function Interface() {
             <Route path="sizing" element={<SizingViewTabbed />} />
             <Route
               path=""
-              element={
-                <>
-                  <div
-                    style={{
-                      backgroundColor: "white",
-                      width: "100vw",
-                      height: "100vh",
-                      position: "absolute",
-                      top: "0",
-                      left: "0",
-                      zIndex: "-1",
-                    }}
-                  ></div>
-                  <h1 style={{ paddingTop: "1rem", paddingLeft: "1rem" }}>
-                    Empty Home Page
-                  </h1>
-                </>
-              }
+              element={<Redirect/>}
             />
           </Routes>
         </div>

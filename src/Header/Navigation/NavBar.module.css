@@ -22,11 +22,11 @@
 }
 
 .navItemText:hover{
-  color: #18e5b0 !important;
+  color: #3fdcb4 !important;
 }
 
 .navItemTextSelected {
-  color: #18e5b0 !important;
+  color: #3fdcb4 !important;
 }
 
 .navContainer {
@@ -35,7 +35,9 @@
   align-content: center;
 }
 
-
+.cds--btn--primary:hover{
+  background: none;
+}
 
 .profileIcon {
   fill:white !important;
@@ -44,12 +46,12 @@
 }
 
 .profileIcon:active, .profileIcon:hover{
-  fill: #18e5b0 !important;
+  fill: #3fdcb4 !important;
 }
 
 .profile {
   outline: none !important;
-  border-color: #18e5b0 !important;
+  border-color: #3fdcb4 !important;
   box-shadow: none !important;
 }
 

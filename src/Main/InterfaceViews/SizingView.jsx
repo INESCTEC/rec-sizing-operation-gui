@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from "react";
-import SizingViewContent from "../Sizing/Sizing/SizingViewContent";
-import SizingFormView from "../Sizing/Sizing/SizingFormView";
-import SearchMetersView from "./SearchMetersView";
+import SizingViewContent from "../Sizing/SizingViewContent";
+import SizingFormView from "../Sizing/SizingFormView";
 
 import styles from "../InterfaceContent.module.css";
 
@@ -10,12 +9,18 @@ import { Tabs, TabList, Tab, TabPanel, TabPanels } from "@carbon/react";
 import { MeterContext } from "../Interface";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { API_URL } from "../Interface";
+import { Redirect } from "../Navigation/Redirect";
 
 function SizingViewTabbed() {
   const { allMeters, _ } = useContext(MeterContext);
-  return allMeters.length > 0 ? (
+
+  if (allMeters.length == 0) {
+    return <Redirect></Redirect>;
+  }
+
+  return (
     <>
-      <div className="card-wrapper">
+      <div>
         <Tabs>
           <TabList aria-label="List of tabs">
             <Tab className={styles.tab}>Sizing</Tab>
@@ -28,8 +33,6 @@ function SizingViewTabbed() {
         </Tabs>
       </div>
     </>
-  ) : (
-    <SearchMetersView></SearchMetersView>
   );
 }
 
@@ -118,7 +121,7 @@ function getOrder(
       })
       .then((data) => {
         setOrderId(data.order_id);
-        setCluster(formData.nr_representative_days > 0);
+        setCluster(false);
         setMeterId(Array.from(formData.meter_ids)[0]);
       })
       .catch((error) => {
@@ -179,7 +182,13 @@ function getOrderData(orderId, cluster, setFetchData, notification) {
               if (error.status > 200 && error.status < 300)
                 return new Promise(() => {
                   setTimeout(
-                    () => getOrderData(orderId,cluster, setFetchData, notification),
+                    () =>
+                      getOrderData(
+                        orderId,
+                        cluster,
+                        setFetchData,
+                        notification
+                      ),
                     5000
                   );
                 });

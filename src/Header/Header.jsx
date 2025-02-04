@@ -51,22 +51,6 @@ function Header() {
           </Link>
         ) : (
           <>
-            <span className={styles.hide}>
-              <OverflowMenu
-                aria-label="overflow-menu"
-                renderIcon={Menu}
-                iconClass={styles.navMenuIcon}
-                className={styles.navMenu}
-              >
-                {buttons.map((button) => (
-                  <OverflowMenuItem
-                    key={button.link}
-                    itemText={button.text}
-                    onClick={() => navigate(button.link)}
-                  ></OverflowMenuItem>
-                ))}
-              </OverflowMenu>
-            </span>
             <Link to="/dashboard">
               <img
                 className={styles.logo}

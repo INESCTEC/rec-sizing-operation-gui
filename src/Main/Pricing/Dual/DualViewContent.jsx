@@ -6,7 +6,6 @@ import { Select, SelectItem } from "@carbon/react";
 import DownloadCSV from "../../../Data/DownloadCSV";
 
 export default function DualViewData({ meterId, setMeterId, ids, data }) {
-
   const meter_inputs = data["meter_inputs"];
   const lem_prices = data["lem_prices"];
   const meter_outputs = data["meter_outputs"];
@@ -35,20 +34,15 @@ export default function DualViewData({ meterId, setMeterId, ids, data }) {
           </Select>
         </div>
       </div>
-      <div className="card-wrapper">
-        <div className="card-header"></div>
-        <div className="card-body">
-          <ChartPerMeter
-            title="Operation Chart"
-            chartId="dual_chart"
-            meter_id_in={meterId}
-            meter_inputs={meter_inputs}
-            meter_outputs={meter_outputs}
-            lem_prices={lem_prices}
-            lem_transactions={lem_transactions}
-          />
-        </div>
-      </div>
+      <ChartPerMeter
+        title="Operation Chart"
+        chartId="dual_chart"
+        meter_id_in={meterId}
+        meter_inputs={meter_inputs}
+        meter_outputs={meter_outputs}
+        lem_prices={lem_prices}
+        lem_transactions={lem_transactions}
+      />
 
       <div className="card-wrapper">
         <div className="card-header"></div>

@@ -6,13 +6,86 @@ import {
   Select,
   SelectItem,
   Button,
-  TextInput,
 } from "@carbon/react";
 import styles from "../../InterfaceContent.module.css";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import MeterInput from "../../SharedModules/MeterInput";
+import PricingParams from "../PricingParams/PricingParams";
+import { useNotification } from "../../../Notification/NotificationProvider";
+import { MeterContext } from "../../Interface";
+import { API_URL } from "../../Interface";
 
-function VanillaFormView({ onSubmit, setFormData }) {
+function VanillaFormView({ setOrderId }) {
+  const notification = useNotification();
+  const default_value = { meter_installed_pv_capacities : {installed_pv_capacity: -1} };
+  const { meters, dataset } = useContext(MeterContext);
+
+  const [formData, setFormData] = useState({
+    start_datetime: null,
+    end_datetime: null,
+    meter_ids: meters,
+    dataset_origin: dataset,
+    sdr_compensation: 0,
+    mmr_divisor: 2,
+  });
+  const [select, setSelect] = useState("default");
+  const options = ["crossing_value", "mmr", "sdr"];
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      meter_ids: meters
+    }));
+  }, [meters]);
+
+  const getOrder = () => {
+    if (
+      select !== "default" &&
+      formData.start_datetime !== null &&
+      formData.end_datetime !== null &&
+      formData.meter_ids.length !== 0
+    ) {
+      document.body.style.cursor = "wait";
+      fetch(API_URL["PRICING"] + `/vanilla/${select}`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(formData),
+      })
+        .then((res) => {
+          if (!res.ok) return Promise.reject(res);
+          return res.json();
+        })
+        .then((data) => {
+          setOrderId(data.order_id);
+        })
+        .catch((error) => {
+          document.body.style.cursor = "default";
+          if (typeof error.json === "function") {
+            error
+              .json()
+              .then((jsonError) => {
+                //console.log"Json error from API");
+                notification.setNotification(jsonError.detail[0].msg);
+                //console.logjsonError.detail);
+              })
+              .catch((_) => {
+                //console.log"Generic error from API");
+                //console.logerror.statusText);
+              });
+          } else {
+            //console.log"Fetch error");
+            //console.logerror);
+          }
+        });
+    } else {
+      notification.setNotification(
+        "Please fill all required fields before submitting."
+      );
+    }
+  };
   const setDates = (dates) => {
     if (dates.length > 1) {
       setFormData((prevFormData) => ({
@@ -23,8 +96,6 @@ function VanillaFormView({ onSubmit, setFormData }) {
     }
   };
 
-  const [select, setSelect] = useState("default");
-  const options = ["crossing_value", "mmr", "sdr"];
 
   return (
     <>
@@ -33,7 +104,7 @@ function VanillaFormView({ onSubmit, setFormData }) {
           aria-label="sample form"
           onSubmit={(e) => {
             e.preventDefault();
-            onSubmit(select);
+            getOrder();
           }}
         >
           <div className="card-wrapper">
@@ -83,9 +154,18 @@ function VanillaFormView({ onSubmit, setFormData }) {
             </div>
           </div>
           <MeterInput></MeterInput>
-
-          <div className="row flex-just-end">
-            <Button className="primary-button" type="submit">
+          <PricingParams
+            default_value={default_value}
+            setUpdateForm={setFormData}
+            sharedMeters={false}
+          ></PricingParams>
+          <PricingParams
+            default_value={default_value}
+            setUpdateForm={setFormData}
+            sharedMeters={true}
+          ></PricingParams>
+          <div className="row flex-end">
+            <Button className="primary-button mt-1" type="submit">
               Submit
             </Button>
           </div>

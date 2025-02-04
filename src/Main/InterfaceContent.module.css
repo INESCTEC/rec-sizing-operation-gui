@@ -28,11 +28,11 @@
 
 
 .tab:hover {
-  border-block-end: 2px solid var(--cds-border-interactive, #00e1a8) !important;
+  border-block-end: 2px solid var(--cds-border-interactive, #3fdcb4) !important;
 }
 
 .tab:active, 
 .tab:focus,
 .tab:focus-visible{
-  outline: 2px solid var(--cds-focus, #00e1a8) !important;
+  outline: 2px solid var(--cds-focus, #3fdcb4) !important;
 }
