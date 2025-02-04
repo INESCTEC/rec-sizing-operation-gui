@@ -17,7 +17,7 @@ import { API_URL } from "../../Interface";
 
 function VanillaFormView({ setOrderId }) {
   const notification = useNotification();
-  const default_value = { meter_installed_pv_capacities : {installed_pv_capacity: -1} };
+  const default_value = { meter_installed_pv_capacities : {installed_pv_capacity: ''} };
   const { meters, dataset } = useContext(MeterContext);
 
   const [formData, setFormData] = useState({

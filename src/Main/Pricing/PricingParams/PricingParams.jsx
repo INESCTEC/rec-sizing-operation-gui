@@ -53,7 +53,7 @@ function PricingParams({ default_value, setUpdateForm, sharedMeters = false }) {
             }
             let inner_obj = {};
             for (let [i_i_key, i_i_value] of Object.entries(i_value)) {
-              if (i_i_value !== -1) {
+              if (i_i_value !== '') {
                 inner_obj[i_i_key] = i_i_value;
               }
             }

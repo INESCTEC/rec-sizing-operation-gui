@@ -10,6 +10,10 @@ export const API_URL = {
   PRICING : 'http://10.61.12.61:8000',
   SIZING : 'http://10.61.12.61:8001'
 }
+// export const API_URL = {
+//   PRICING : 'http://127.0.0.1:8000',
+//   SIZING : 'http://127.0.0.1:8001'
+// }
 
 
 export const MeterContext = createContext(null);

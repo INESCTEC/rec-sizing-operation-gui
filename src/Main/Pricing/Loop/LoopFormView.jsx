@@ -18,18 +18,18 @@ import { API_URL } from "../../Interface";
 function LoopFormView({ setOrderId, setLemOrganization, lemOrganization, setMeters }) {
   const notification = useNotification();
   const default_value = {
-    meter_installed_pv_capacities: { installed_pv_capacity: -1 },
+    meter_installed_pv_capacities: { installed_pv_capacity: '' },
     meter_contracted_power: {
-      contracted_power: -1,
+      contracted_power: '',
     },
     meter_storage: {
-      deg_cost: -1,
-      e_bn: -1,
-      eff_bc: -1,
-      eff_bd: -1,
-      p_max: -1,
-      soc_max: -1,
-      soc_min: -1,
+      deg_cost: '',
+      e_bn: '',
+      eff_bc: '',
+      eff_bd: '',
+      p_max: '',
+      soc_max: '',
+      soc_min: '',
     },
   };
   const { meters, dataset } = useContext(MeterContext);

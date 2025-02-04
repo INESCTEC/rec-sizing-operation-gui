@@ -98,10 +98,12 @@ function PricingParamsMeter({ meter_id, meters, setMeters, sharedMeters }) {
                         id={i_key + meter_id + "s"}
                         key={i_key + meter_id + "s"}
                         className={styles.numberInput}
-                        min={-1}
-                        value={i_value}
+                        allowEmpty={true}
+                        min={0}
+                        step={0.000000000000001}
+                        defaultValue={''}
+                        hideSteppers={true}
                         onChange={(_, state) => {
-                          //console.log(meter_id);
                           updateMeter(meter_id, key, i_key, state.value);
                         }}
                       ></NumberInput>
