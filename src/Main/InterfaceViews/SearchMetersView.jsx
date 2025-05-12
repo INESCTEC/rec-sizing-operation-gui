@@ -136,13 +136,10 @@ const ALL_METERS = {
   ],
   INDATA: [
     "0cb815fd4dec",
-    "0cb815fd32d4",
     "0cb815fd4bcc",
     "0cb815fc5350",
-    "0cb815fd5af8",
     "0cb815fcc358",
     "34987a685128",
-    "0cb815fd1dc0",
     "0cb815fcc31c",
     "0cb815fcf5b4",
     "0cb815fd15bc",
@@ -155,11 +152,9 @@ const ALL_METERS = {
     "0cb815fd1d38",
     "0cb815fd5654",
     "0cb815fd534c",
-    "0cb815fcd0b4",
     "34987a676138",
     "34987a675060",
-    "0cb815fd49c4",
-    "34987a674af0",
+    "0cb815fd49c4"
   ],
 };
 
