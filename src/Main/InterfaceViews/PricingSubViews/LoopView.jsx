@@ -42,7 +42,7 @@ function LoopView() {
 
 function getOrderData(orderId, lemOrganization, setFetchData, notification) {
   if (orderId !== null) {
-    fetch(API_URL["PRICING"] + `/loop/${lemOrganization}/${orderId}`)
+    fetch(API_URL["PRICING"] + `loop/${lemOrganization}/${orderId}`)
       .then((res) => {
         if (res.status !== 200) {
           return Promise.reject(res);

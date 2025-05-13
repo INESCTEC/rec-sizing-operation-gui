@@ -46,7 +46,7 @@ function VanillaFormView({ setOrderId }) {
       formData.meter_ids.length !== 0
     ) {
       document.body.style.cursor = "wait";
-      fetch(API_URL["PRICING"] + `/vanilla/${select}`, {
+      fetch(API_URL["PRICING"] + `vanilla/${select}`, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

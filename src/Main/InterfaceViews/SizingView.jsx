@@ -107,7 +107,7 @@ function getOrder(
     formData.meter_ids.length !== 0
   ) {
     document.body.style.cursor = "wait";
-    fetch(API_URL["SIZING"] + `/${path}`, {
+    fetch(API_URL["SIZING"] + `${path}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -153,8 +153,8 @@ function getOrder(
 function getOrderData(orderId, cluster, setFetchData, notification) {
   if (orderId !== null) {
     let link = cluster
-      ? API_URL["SIZING"] + `/get_clustered_sizing/${orderId}`
-      : API_URL["SIZING"] + `/get_sizing/${orderId}`;
+      ? API_URL["SIZING"] + `get_clustered_sizing/${orderId}`
+      : API_URL["SIZING"] + `get_sizing/${orderId}`;
     fetch(link)
       .then((res) => {
         if (res.status !== 200) {

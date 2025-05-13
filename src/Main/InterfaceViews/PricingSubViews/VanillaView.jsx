@@ -25,7 +25,7 @@ function VanillaView() {
 
 function getOrderData(orderId, setFetchData, notification) {
   if (orderId !== null) {
-    fetch(API_URL["PRICING"] + `/vanilla/${orderId}`)
+    fetch(API_URL["PRICING"] + `vanilla/${orderId}`)
       .then((res) => {
         if (res.status !== 200) {
           return Promise.reject(res);

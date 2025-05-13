@@ -61,7 +61,7 @@ function SearchMetersViewPanel() {
 
 function getData(setFetchData, formData) {
   document.body.style.cursor = "wait";
-  fetch(API_URL["SIZING"] + `/search_meters_in_area`, {
+  fetch(API_URL["SIZING"] + `search_meters_in_area`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

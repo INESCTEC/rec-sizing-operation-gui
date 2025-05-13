@@ -70,7 +70,7 @@ function LoopFormView({ setOrderId, setLemOrganization, lemOrganization, setMete
       formData.meter_ids.length !== 0
     ) {
       document.body.style.cursor = "wait";
-      fetch(API_URL["PRICING"] + `/loop/${lemOrganization}/${select}`, {
+      fetch(API_URL["PRICING"] + `loop/${lemOrganization}/${select}`, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

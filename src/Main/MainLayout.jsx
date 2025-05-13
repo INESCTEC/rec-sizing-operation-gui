@@ -21,10 +21,7 @@ function MainLayout() {
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
           </Route>
-          <Route
-              path=""
-              element={<Redirect/>}
-            />
+          <Route path="*" element={<Redirect />} />
         </Routes>
       </div>
     </>

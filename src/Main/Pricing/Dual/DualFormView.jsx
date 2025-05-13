@@ -62,7 +62,7 @@ function DualFormView({ setOrderId, setMeters }) {
       formData.meter_ids.length !== 0
     ) {
       document.body.style.cursor = "wait";
-      fetch(API_URL['PRICING'] + `/dual/`, {
+      fetch(API_URL['PRICING'] + `dual/`, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

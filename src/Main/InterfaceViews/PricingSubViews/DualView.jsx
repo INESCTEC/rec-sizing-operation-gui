@@ -35,7 +35,7 @@ function DualView() {
 
 function getOrderData(orderId, setFetchData, notification) {
   if (orderId !== null) {
-    fetch(API_URL["PRICING"] + `/dual/${orderId}`)
+    fetch(API_URL["PRICING"] + `dual/${orderId}`)
       .then((res) => {
         if (res.status !== 200) {
           return Promise.reject(res);
