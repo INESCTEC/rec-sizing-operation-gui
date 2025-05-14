@@ -176,6 +176,8 @@ function SizingParamsSharedMeter({
                   className={styles.numberInput}
                   min={0}
                   max={100}
+                  step={0.000000000000001}
+                  hideSteppers={true}
                   invalid={error}
                   invalidText="Total ownership should be 100%."
                   value={v.percentage}
