@@ -86,7 +86,6 @@ function SizingParamsSharedMeter({
       setError(true);
     }
   };
-
   return (
     <>
       <Stack gap={7}>
@@ -94,12 +93,13 @@ function SizingParamsSharedMeter({
           <TextInput
             id={"meter_id" + "spsm"}
             key={"meter_id" + "spsm"}
-            placeholder="Shared Meter Id"
+            placeholder="SharedMeter#"
+            value={meterParams['meter_id'] == serialNumber ?'SharedMeter#'+serialNumber:meterParams['meter_id']}
             labelText={
               "The string that unequivocally identifies the shared meter."
             }
             onChange={(e) => {
-              updateSharedMeter(serialNumber, "meter_id", e.target.value);
+              updateSharedMeter(serialNumber, "meter_id", e.target.value.trim() == ''?'SharedMeter#'+serialNumber:e.target.value.trim());
             }}
           ></TextInput>
           <Button

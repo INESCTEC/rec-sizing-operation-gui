@@ -32,7 +32,7 @@ function PricingParams({ default_value, setUpdateForm, sharedMeters = false }) {
     title = "Shared " + title;
     curr_value = {
       ...JSON.parse(JSON.stringify(curr_value)),
-      meter_id: "Shared Meter " + serialNumber,
+      meter_id: "SharedMeter#" + serialNumber,
     };
   }
 
@@ -84,7 +84,7 @@ function PricingParams({ default_value, setUpdateForm, sharedMeters = false }) {
                 <AccordionItem
                   key={currSerial + "accordion"}
                   title={
-                    sharedMeters ? "Shared Meter " + currSerial : currSerial
+                    sharedMeters ? "SharedMeter#" + currSerial : currSerial
                   }
                   open={true}
                 >

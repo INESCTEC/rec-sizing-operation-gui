@@ -59,12 +59,12 @@ function PricingParamsMeter({ meter_id, meters, setMeters, sharedMeters }) {
               <TextInput
                 id={"meter_idpsm" + meter_id}
                 key={"meter_idpsm" + meter_id}
-                placeholder={"Shared Meter" + meters[meter_id].meter_id}
+                placeholder={"SharedMeter" + meters[meter_id].meter_id}
                 labelText={
                   "The string that unequivocally identifies the shared meter."
                 }
                 onChange={(e) => {
-                  updateMeterId(meter_id, e.target.value);
+                  updateMeterId(meter_id, e.target.value.trim() == ''?'SharedMeter#'+meter_id:e.target.value.trim());
                 }}
                 value={meters[meter_id].meter_id}
               ></TextInput>
