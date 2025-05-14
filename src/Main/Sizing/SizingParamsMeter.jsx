@@ -61,6 +61,8 @@ function SizingParamsMeter({ id, addMeter }) {
                     className={styles.numberInput}
                     min={0}
                     value={value}
+                    step={0.000000000000001}
+                    hideSteppers={true}
                     onChange={(_, state) =>
                       setMeter((prev) => ({
                         ...prev,

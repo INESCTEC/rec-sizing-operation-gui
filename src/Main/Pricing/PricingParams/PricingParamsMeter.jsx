@@ -22,7 +22,7 @@ function PricingParamsMeter({ meter_id, meters, setMeters, sharedMeters }) {
       "Installed PV capacity that will overrule the original PV capacity of the meter, in kVA.",
     e_bn: "Storage's energy capacity, in kWh.",
     p_max: "Storage's maximum power rate (for charge and discharge), in kW.",
-    deg_cost: "Degradation cost of the storage asset, in %.",
+    deg_cost: "Degradation cost of the storage asset, in €/kWh.",
     contracted_power: "Contracted power at the meter, in kVA.",
   };
 

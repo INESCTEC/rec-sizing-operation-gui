@@ -121,7 +121,7 @@ function getOrder(
       })
       .then((data) => {
         setOrderId(data.order_id);
-        setCluster(false);
+        setCluster(formData.nr_representative_days > 0);
         setMeterId(Array.from(formData.meter_ids)[0]);
       })
       .catch((error) => {
