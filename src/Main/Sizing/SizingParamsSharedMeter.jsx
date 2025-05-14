@@ -153,6 +153,8 @@ function SizingParamsSharedMeter({
                     key={key + serialNumber + "s"}
                     className={styles.numberInput}
                     min={0}
+                    step={0.000000000000001}
+                    hideSteppers={true}
                     value={value}
                     onChange={(_, state) =>
                       updateSharedMeter(serialNumber, key, state.value)
