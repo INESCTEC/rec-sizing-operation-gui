@@ -6,13 +6,9 @@ import PricingView from "./InterfaceViews/PricingView";
 import SizingViewTabbed from "./InterfaceViews/SizingView";
 import { Redirect } from "./Navigation/Redirect";
 
-// export const API_URL = {
-//   PRICING : 'https://rec-sizing.haslab-dataspace.pt/api/pricing' // missing '/',
-//   ,SIZING : 'https://rec-sizing.haslab-dataspace.pt/api/sizing' // missing '/'
-// }
 export const API_URL = {
-  PRICING : 'http://127.0.0.1:8000/',
-  SIZING : 'http://127.0.0.1:8001/'
+  PRICING : 'https://rec-sizing.haslab-dataspace.pt/api/pricing' // missing '/',
+  ,SIZING : 'https://rec-sizing.haslab-dataspace.pt/api/sizing' // missing '/'
 }
 
 
