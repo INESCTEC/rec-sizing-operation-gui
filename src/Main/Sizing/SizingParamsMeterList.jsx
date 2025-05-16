@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from "react";
 import SizingParamsMeter from "./SizingParamsMeter";
-import MeterInput from "../SharedModules/MeterInput";
 
 import { MeterContext } from "../Interface";
 import { Accordion, AccordionItem } from "@carbon/react";
@@ -8,14 +7,24 @@ import { Accordion, AccordionItem } from "@carbon/react";
 export default function SizingParamsMeterList({ setMeterParams }) {
   const [meterList, setMeterList] = useState([]);
 
-  const { meters, setMeters } = useContext(MeterContext);
+  const { meters } = useContext(MeterContext);
 
   const addMeter = (meter) =>
-    setMeterList((prev) => prev.concat({ id: meter.id, meter: meter }));
+    setMeterList((prev) => {
+      let idx = prev.map(currMeter => currMeter.id).indexOf(meter.id);
+      if (idx == -1){
+        return prev.concat(meter);
+      } else{
+        let newArr = prev.slice();
+        newArr[idx] = meter;
+        return newArr;
+      }
+    });
 
   useEffect(() => {
-    setMeterParams(meterList.map((meter) => meter.meter));
+    setMeterParams(meterList);
   }, [meterList]);
+
 
   return (
     <>

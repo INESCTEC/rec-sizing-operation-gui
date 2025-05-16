@@ -231,7 +231,7 @@ function SizingFormView({ onSubmit, setFormData }) {
               onClick={() => {
                 addSharedMeter(serialNumber, {
                   sizing_params_for_shared_meter: {
-                    meter_id: serialNumber,
+                    meter_id: 'SharedMeter#'+serialNumber,
                     power_energy_ratio: 1,
                     l_bic: 10,
                     minimum_new_pv_power: 0,

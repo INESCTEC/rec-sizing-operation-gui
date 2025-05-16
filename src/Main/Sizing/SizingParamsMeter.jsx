@@ -42,8 +42,7 @@ function SizingParamsMeter({ id, addMeter }) {
     l_gic: "Cost of installing new PV, in €/kW.",
   };
 
-  useEffect(() => addMeter(meter), []);
-
+  useEffect(() => addMeter(meter), [meter]);
   return (
     <>
       <Stack gap={7}>
