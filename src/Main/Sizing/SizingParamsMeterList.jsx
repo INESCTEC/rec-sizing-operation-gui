@@ -11,7 +11,7 @@ export default function SizingParamsMeterList({ setMeterParams }) {
 
   const addMeter = (meter) =>
     setMeterList((prev) => {
-      let idx = prev.map(currMeter => currMeter.id).indexOf(meter.id);
+      let idx = prev.map(currMeter => currMeter.meter_id).indexOf(meter.meter_id);
       if (idx == -1){
         return prev.concat(meter);
       } else{
