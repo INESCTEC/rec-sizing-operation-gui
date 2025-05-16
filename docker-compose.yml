@@ -1,0 +1,6 @@
+services:
+  app:
+    build: .
+    ports:
+      - "5173:8080"
+    container_name: sizing_operation_gui
