@@ -4,23 +4,23 @@ function SizingResultsTable({data}) {
   let headers = [
     {
       key: "contracted_power",
-      header: "Contracted Power",
+      header: "Contracted Power (kW)",
     },
     {
       key: "installed_pv",
-      header: "Installed PV Power",
+      header: "Installed PV Power (kW)",
     },
     {
       key: "installed_storage",
-      header: "Installed Storage Capacity",
+      header: "Installed Storage Capacity (khW)",
     },
     {
       key: "total_pv",
-      header: "Total PV",
+      header: "Total PV (kW)",
     },
     {
       key: "total_storage",
-      header: "Total Storage",
+      header: "Total Storage (kWh)",
     },
   ];
 
