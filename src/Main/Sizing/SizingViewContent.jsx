@@ -6,6 +6,7 @@ import ChartPerMeterClustered from "../SharedModules/ChartPerMeterClustered";
 import ChartPerMeter from "../SharedModules/ChartPerMeter";
 import { Select, SelectItem } from "@carbon/react";
 import BarChart from "../../Data/BarChart";
+import SizingResultsTable from "./SizingResultsTable";
 
 function SizingViewContent({ meterId, setMeterId, ids, data, clustered }) {
   const meter_inputs = data["meter_operation_inputs"];
@@ -70,6 +71,8 @@ function SizingViewContent({ meterId, setMeterId, ids, data, clustered }) {
           </Select>
         </div>
       </div>
+      <div class="card-header"></div>
+      <SizingResultsTable data={meter_investment_outputs}></SizingResultsTable>
       {clustered ? (
         <ChartPerMeterClustered
           title="Operation Chart"
@@ -89,7 +92,6 @@ function SizingViewContent({ meterId, setMeterId, ids, data, clustered }) {
           lem_transactions={lem_transactions}
         />
       )}
-
       <div className="card-wrapper">
         <div className="card-header"></div>
         <div className="card-body">
