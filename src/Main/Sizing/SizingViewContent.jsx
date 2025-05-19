@@ -72,7 +72,7 @@ function SizingViewContent({ meterId, setMeterId, ids, data, clustered }) {
         </div>
       </div>
       <div class="card-header"></div>
-      <SizingResultsTable data={meter_investment_outputs}></SizingResultsTable>
+      <SizingResultsTable data={meter_investment_outputs.filter(meter => meter.meter_id == meterId)}></SizingResultsTable>
       {clustered ? (
         <ChartPerMeterClustered
           title="Operation Chart"

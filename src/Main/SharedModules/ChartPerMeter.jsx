@@ -302,7 +302,6 @@ function ChartPerMeter({
     });
   }
 
-  console.log(energy_purchased_l)
   if (energy_purchased_l.length > 0) {
     series.push({
       name: "LEM Purchased",
