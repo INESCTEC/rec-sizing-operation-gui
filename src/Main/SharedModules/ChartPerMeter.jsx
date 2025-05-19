@@ -22,6 +22,8 @@ function ChartPerMeter({
   const energy_surplus_l = [];
   const energy_supplied_l = [];
   const net_load_l = [];
+  const energy_purchased_l = [];
+  const energy_sold_l = [];
   const tableData = {};
   let option_data = [];
 
@@ -70,6 +72,8 @@ function ChartPerMeter({
       datetime,
       energy_surplus,
       energy_supplied,
+      energy_sold_lem,
+      energy_purchased_lem,
       net_load,
       bess_energy_charged,
       bess_energy_discharged,
@@ -91,9 +95,18 @@ function ChartPerMeter({
       tableData[datetime]["supplied"] = energy_supplied;
       tableData[datetime]["surplus"] = energy_surplus;
       tableData[datetime]["net_load"] = net_load;
+      //Só para sizing
+      if(energy_sold_lem != null && energy_purchased_lem != null){
+        energy_purchased_l.push([datetime, energy_purchased_lem])
+        tableData[datetime]["energy_purchased"] = energy_purchased_lem;
+
+        energy_sold_l.push([datetime, energy_sold_lem]);
+        tableData[datetime]["energy_sold"] = energy_sold_lem;
+      }
     }
   }
 
+  //if (pricing)
   for (let key in lem_transactions) {
     const { meter_id, datetime, sold_position } = lem_transactions[key];
     if (meter_id === meter_id_in) {
@@ -269,6 +282,46 @@ function ChartPerMeter({
       name: "Sold Position",
     });
   }
+  
+  if (energy_sold_l.length > 0) {
+    series.push({
+      name: "LEM Sold",
+      type: "line",
+      symbol: "circle",
+      symbolSize: 14,
+      yAxisIndex: 0,
+      data: energy_sold_l,
+      tooltip: {
+        valueFormatter: function (value) {
+          return value + " KWh";
+        },
+      },
+    });
+    option_data.push({
+      name: "LEM Sold",
+    });
+  }
+
+  console.log(energy_purchased_l)
+  if (energy_purchased_l.length > 0) {
+    series.push({
+      name: "LEM Purchased",
+      type: "line",
+      symbol: "circle",
+      symbolSize: 14,
+      yAxisIndex: 0,
+      data: energy_purchased_l,
+      tooltip: {
+        valueFormatter: function (value) {
+          return value + " KWh";
+        },
+      },
+    });
+    option_data.push({
+      name: "LEM Purchased",
+    });
+  }
+  
   /*
   series.push({
     name: "net_load",

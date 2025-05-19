@@ -21,6 +21,8 @@ function ChartPerMeterClustered({
   const battery_cluster = {};
   const energy_surplus_cluster = {};
   const energy_supplied_cluster = {};
+  const energy_sold_cluster = {};
+  const energy_purchased_cluster = {};
   const net_load_cluster = {};
   const tableData = {};
   let option_data_cluster = {};
@@ -89,6 +91,8 @@ function ChartPerMeterClustered({
       time,
       energy_surplus,
       energy_supplied,
+      energy_sold_lem,
+      energy_purchased_lem,
       net_load,
       bess_energy_charged,
       bess_energy_discharged,
@@ -107,6 +111,14 @@ function ChartPerMeterClustered({
       net_load_cluster[cluster_nr]
         ? net_load_cluster[cluster_nr].push([time, energy_surplus])
         : (net_load_cluster[cluster_nr] = [[time, energy_surplus]]);
+        
+      energy_sold_cluster[cluster_nr]
+      ? energy_sold_cluster[cluster_nr].push([time, energy_sold_lem])
+      : (energy_sold_cluster[cluster_nr] = [[time, energy_sold_lem]]);
+        
+      energy_purchased_cluster[cluster_nr]
+      ? energy_purchased_cluster[cluster_nr].push([time, energy_purchased_lem])
+      : (energy_purchased_cluster[cluster_nr] = [[time, energy_purchased_lem]]);
 
       let obj = {
         battery: bess_energy_content,
@@ -122,6 +134,8 @@ function ChartPerMeterClustered({
           tableData[cluster_nr][time]["supplied"] = energy_supplied;
           tableData[cluster_nr][time]["surplus"] = energy_surplus;
           tableData[cluster_nr][time]["net_load"] = net_load;
+          tableData[cluster_nr][time]["energy_purchased"] = energy_purchased_lem;
+          tableData[cluster_nr][time]["energy_sold"] = energy_sold_lem;
         } else tableData[cluster_nr][time] = obj;
       else tableData[cluster_nr] = time_obj;
     }
@@ -145,6 +159,7 @@ function ChartPerMeterClustered({
       else tableData[cluster_nr] = time_obj;
     }
   }
+  
 
   for (let cluster_nr of Object.keys(tableData)) {
     series_cluster[cluster_nr] = [
@@ -249,21 +264,9 @@ function ChartPerMeterClustered({
             return value + " KWh";
           },
         },
-      },
-      {
-        name: "Sold Position",
-        type: "line",
-        symbol: "circle",
-        symbolSize: 14,
-        yAxisIndex: 0,
-        data: sold_position_cluster[cluster_nr],
-        tooltip: {
-          valueFormatter: function (value) {
-            return value + " KWh";
-          },
-        },
-      },
+      }
     ];
+
     option_data_cluster[cluster_nr] = [
       {
         name: "Buy Price",
@@ -289,10 +292,69 @@ function ChartPerMeterClustered({
       {
         name: "Generation",
       },
-      {
-        name: "Sold Position",
-      },
+      
     ];
+
+    if(energy_sold_cluster[cluster_nr] != null){
+      series_cluster[cluster_nr].push({
+        name: "LEM Sold",
+        type: "line",
+        symbol: "circle",
+        symbolSize: 14,
+        yAxisIndex: 0,
+        data: energy_sold_cluster[cluster_nr],
+        tooltip: {
+          valueFormatter: function (value) {
+            return value + " KWh";
+          },
+        },
+      });
+      option_data_cluster[cluster_nr].push(
+        {
+          name: "LEM Sold",
+        }
+      );
+  }
+
+    if(energy_purchased_cluster[cluster_nr] != null){
+      series_cluster[cluster_nr].push({
+        name: "LEM Purchased",
+        type: "line",
+        symbol: "circle",
+        symbolSize: 14,
+        yAxisIndex: 0,
+        data: energy_purchased_cluster[cluster_nr],
+        tooltip: {
+          valueFormatter: function (value) {
+            return value + " KWh";
+          },
+        },
+      });
+      option_data_cluster[cluster_nr].push(
+        {
+          name: "LEM Purchased",
+        }
+      );
+    }
+    
+    if(sold_position_cluster[cluster_nr] != null){
+      series_cluster[cluster_nr].push({
+        name: "Sold Position",
+        type: "line",
+        symbol: "circle",
+        symbolSize: 14,
+        yAxisIndex: 0,
+        data: sold_position_cluster[cluster_nr],
+        tooltip: {
+          valueFormatter: function (value) {
+            return value + " KWh";
+          },
+        },
+      });
+      option_data_cluster[cluster_nr].push({
+        name: "Sold Position",
+      });
+    }
   }
   /*
   series.push({

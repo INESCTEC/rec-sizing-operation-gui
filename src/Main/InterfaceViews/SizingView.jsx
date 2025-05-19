@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import SizingViewContent from "../Sizing/SizingViewContent";
 import SizingFormView from "../Sizing/SizingFormView";
+import WaitingPage from "../Navigation/WaitingPage";
 
 import styles from "../InterfaceContent.module.css";
 
@@ -63,14 +64,18 @@ function SizingView() {
     () => getOrderData(orderId, cluster, setFetchData, notification),
     [orderId]
   );
-  return fetchData ? (
-    <SizingViewContent
-      data={fetchData}
-      meterId={meterId}
-      setMeterId={setMeterId}
-      ids={formData.meter_ids.concat(sharedMetersL)}
-      clustered={cluster}
-    />
+  return orderId ? (
+    fetchData ? (
+      <SizingViewContent
+        data={fetchData}
+        meterId={meterId}
+        setMeterId={setMeterId}
+        ids={formData.meter_ids.concat(sharedMetersL)}
+        clustered={cluster}
+      />
+    ) : (
+      <WaitingPage />
+    )
   ) : (
     <SizingFormView
       onSubmit={(hasAssets) => {

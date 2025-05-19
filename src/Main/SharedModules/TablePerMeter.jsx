@@ -86,6 +86,20 @@ export default function TablePerMeter({ data }) {
     });
   }
 
+  if (header_keys.includes("energy_sold")) {
+    headers.push({
+      key: "energy_sold",
+      header: "LEM Sold (kWh)",
+    });
+  }
+
+  if (header_keys.includes("energy_purchased")) {
+    headers.push({
+      key: "energy_purchased",
+      header: "LEM Purchased (kWh)",
+    });
+  }
+
   if (header_keys.includes("net_load")) {
     headers.push({
       key: "net_load",
@@ -107,7 +121,7 @@ export default function TablePerMeter({ data }) {
         Net Load Equations
       </p>
       <p style={{ fontSize: "0.9rem" }}>
-        Net Load = Supplied - Surplus - Sold Position
+        Net Load = Supplied - Surplus - {header_keys.includes("sold_position")?'Sold Position':'(LEM Purchased - LEM Sold)'}
       </p>
       <p style={{ fontSize: "0.9rem" }}>
         Net Load = Load - Generation + Battery
