@@ -14,6 +14,10 @@ This development was made under the *Enershare* project.
 > the instructions provided on the respective GitHub repositories of both APIs.
 
 
+## Main Architecture
+![alt text](figures/architecture.png)
+
+
 ## Developers // Contacts:
 
 * Adriano Novo Maior (adriano.n.maior@inesctec.pt)
