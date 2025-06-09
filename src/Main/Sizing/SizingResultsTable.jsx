@@ -12,7 +12,7 @@ function SizingResultsTable({data}) {
     },
     {
       key: "installed_storage",
-      header: "Installed Storage Capacity (khW)",
+      header: "Installed Storage Capacity (kWh)",
     },
     {
       key: "total_pv",
